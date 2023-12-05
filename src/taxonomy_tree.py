@@ -104,7 +104,7 @@ parents_unseen = {}
 # following forward pointers and backpointers in the n-ary tree like a deque
 # i.e. bidirectional links
 
-def build_parent_map():
+def build_parent_map(custom_taxonomy_ids_filename):
   """
   This method closely implements
   https://github.com/DerrickWood/kraken/blob/master/src/krakenutil.cpp
@@ -224,7 +224,29 @@ def build_parent_map():
 
   # let's start with only the ID tree that Derrick Wood uses
   
+  taxonomy_ids_of_reference_genomes : List[int] = get_taxonomy_ids_from_file(custom_taxonomy_ids_filename)
+  pruned_taxonomy_id_to_parent_id = {}
+  # pruned_taxonomy_id_to_node
   
+  # building the pruned tree by copying over only those branches
+  # that contain the 20 reference genomes
+  # for the taxonomy_id of each of the ~20 reference genomes,
+  for taxonomy_id in taxonomy_ids_of_reference_genomes:
+    # we start with the taxonomy id of that genome
+    cur_id = taxonomy_id
+    # and until we hit the root node,
+    while taxonomy_id_to_parent_id[cur_id] != 1:       
+      # we copy over this key-value (child node to parent node) pair to pruned tree
+      pruned_taxonomy_id_to_parent_id[taxonomy_id] = taxonomy_id_to_parent_id[taxonomy_id]
+      # now we chase the parent node's parent, iteratively, until we hit the root
+      cur_id = taxonomy_id_to_parent_id[taxonomy_id]
+  # at the end we've added only those paths in the tree
+  # that are necessary for our taxonomic classification purposes
+  # (i.e. leaf nodes are only those ~20 reference genomes,
+  # or however many we choose to have)
+
+  
+
   # and return the gathered tree information about the
   # taxonomic tree so that it doesn't have to be loaded in memory again
   # TODO make sure this is returning everything that needs to be returned

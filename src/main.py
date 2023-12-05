@@ -1,5 +1,6 @@
 import os
 import argparse
+from typing import List, Dict
 
 # helper files
 import taxonomy_tree
@@ -58,12 +59,12 @@ def main():
 
   # Step 1. Build the taxonomy
   # This method is found in the taxonomy_tree.py file
-  taxonomy_tree.build_parent_map()
+  taxonomy_id_to_node, taxonomy_id_to_parent_id, root_node = taxonomy_tree.build_parent_map()
 
   # Step 2. After the parent map (i.e. taxonomy tree) is built in taxonomy_tree.py,
   # We will build the database with actual cross-references to kmers and lcas
   # This method is found in the kmer_to_lca_mapping.py file
-  kmer_to_lca_mapping.build_database()
+  kmer_to_lca : Dict[str, int] = kmer_to_lca_mapping.build_database()
 
   # Step 3. Make the pseudoreads from the query sequence
   # pseudoreads = make_pseudoreads(query_sequence)
@@ -93,7 +94,6 @@ def print_summary_contaminants_found():
   """
   # TODO implement me!
   raise NotImplementedError()
-
 
 
 if __name__ == "__main__":
