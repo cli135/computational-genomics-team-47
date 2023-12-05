@@ -1,4 +1,4 @@
-# Step 3. Scan through the query pseudoreads and count how many times each k-mer
+# Step 4. Scan through the query pseudoreads and count how many times each k-mer
 # is hit (matches exactly) with a kmer in the database of contaminants.
 
 def get_kmer_hit_counts_with_database_from_psuedoreads():

@@ -1,4 +1,4 @@
-# Step 4. Root to leaf paths to find the most likely contaminant
+# Step 5. Root to leaf paths to find the most likely contaminant
 def find_highest_weighted_root_to_leaf_path():
   """
 

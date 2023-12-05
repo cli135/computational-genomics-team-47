@@ -1,7 +1,17 @@
 # computational-genomics-team-47
 computational-genomics-team-47 Fall 2023 - Dr. Langmead's Computational Genomics: Sequences
 
-## File Summary
+## Overview
+
+Our program has 6 steps, which are identified in the below picture:
+
+![Image summary of potential plan for how our program works](images/summary_of_planned_program.png)
+
+Each step roughly corresponds to a separate `.py` file.
+
+The `main.py` file is the one that runs the entire contamination classification program.
+
+## Repository Folder Structure Summary
 - `src` contains the Python program that classifies contaminants in reads user a exact matching k-mer database (and the least common ancestor algorithm and root-to-leaf paths).
 - `genomes-of-common-contaminants` contains approximately 20 genomes (totalling ~90 MB) of bacteria and viruses that common contaminate DNA sequences (Mycoplasma, Eschericia lambda phage phiX174, etc.)
 - `taxonomy` contains:

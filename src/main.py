@@ -76,6 +76,8 @@ def main():
   exit(0)
 
 
+# Step 6. print data and summary below of contaminants found
+# TODO need to add necessary arguments and parameters
 def print_summary_contaminants_found():
   """
   Prints to stdout a summary of the contamination information
