@@ -222,9 +222,9 @@ def build_parent_map():
 
   # TODO prune taxonomic tree and output pruned tree information to a file to be read later
 
-
+  # let's start with only the ID tree that Derrick Wood uses
   
-
+  
   # and return the gathered tree information about the
   # taxonomic tree so that it doesn't have to be loaded in memory again
   # TODO make sure this is returning everything that needs to be returned
@@ -270,6 +270,10 @@ def get_taxonomy_ids() -> List[int]:
   return the corresponding taxonomy IDs of those genomes.
   """
   # get the taxonomy id for this FASTA file
+  # This will probably stay unimplemented because right now
+  # it is difficult to download the 37 GB file needed to do this, at
+  # https://ftp.ncbi.nlm.nih.gov/pub/taxonomy/accession2taxid/
+  pass
 
 
 def get_taxonomy_ids_from_file(custom_taxonomy_ids_filename) -> List[int]:
@@ -284,16 +288,23 @@ def get_taxonomy_ids_from_file(custom_taxonomy_ids_filename) -> List[int]:
   # using the custom seqid2taxid instead of searching the whole 37 GB mapping at
   # https://ftp.ncbi.nlm.nih.gov/pub/taxonomy/accession2taxid/
   with open(custom_taxonomy_ids_filename, 'r') as fp:
+    # getting the second column of each line,
+    # which is the taxonomy ID of that accession ID
     for line in fp.readlines():
       tokens = line.strip.split()
       tax_id = tokens[1]
-      taxonomy_ids_of_reference_genomes.append(tax_id)
+      try:
+        int_tax_id = int(tax_id)
+        # append int taxonomy id to the list
+        taxonomy_ids_of_reference_genomes.append(tax_id)
+      except ValueError:
+        print("Couldn't cast tax_id to integer value")
   return taxonomy_ids_of_reference_genomes
 
 
 def main():
-  print(get_fasta_ncbi_accession_ids("genomes-of-common-contaminants"))
-  # build_parent_map()
+  # print(get_fasta_ncbi_accession_ids("genomes-of-common-contaminants"))
+  build_parent_map()
 
 
 if __name__ == "__main__":
