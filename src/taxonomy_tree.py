@@ -1,7 +1,7 @@
 import os, sys, argparse
 from time import gmtime
 from time import strftime 
-from typing import List
+from typing import List, Tuple, Dict
 
 """
 taxonomy_tree.py
@@ -104,17 +104,24 @@ parents_unseen = {}
 # following forward pointers and backpointers in the n-ary tree like a deque
 # i.e. bidirectional links
 
-def build_parent_map(custom_taxonomy_ids_filename):
+def build_parent_map(custom_taxonomy_ids_filename : str) -> \
+  Tuple[Dict[int, TaxaTree], Dict[int, int], TaxaTree]:
   """
-  This method closely implements
+  This method is based off of methods at the below two links:
   https://github.com/DerrickWood/kraken/blob/master/src/krakenutil.cpp
+  https://github.com/jenniferlu717/KrakenTools/blob/master/make_ktaxonomy.py
   
-  Which basically extracts the first two columns from nodes.dmp and puts them into
-  the taxonomy_id_to_parent_id map.
-  
-  Keyword arguments:
-  argument -- description
-  Return: return_description
+  both of which basically extract the first two columns from nodes.dmp and puts them into
+  the taxonomy_id_to_parent_id map, or a taxonomy_id_to_node map.
+
+  @param: the filename of the custom taxonomy ids of the ~20 reference genomes in the database
+    of genomes-of-common-contaminants
+
+  @return a 3-tuple of values
+      pruned_taxonomy_id_to_node, pruned_taxonomy_id_to_parent_id, pruned_tree_root_node
+
+      which is the pruned taxonomic tree data, pruned to contain leaves that are only
+      and exactly the ~20 reference genomes in the database of genomes-of-common-contaminants
   """
   
   nodes_dmp_file_handle = open('./taxonomy/nodes.dmp', 'r')
@@ -226,25 +233,57 @@ def build_parent_map(custom_taxonomy_ids_filename):
   
   taxonomy_ids_of_reference_genomes : List[int] = get_taxonomy_ids_from_file(custom_taxonomy_ids_filename)
   pruned_taxonomy_id_to_parent_id = {}
-  # pruned_taxonomy_id_to_node
   
   # building the pruned tree by copying over only those branches
   # that contain the 20 reference genomes
   # for the taxonomy_id of each of the ~20 reference genomes,
+  
+  pruned_tree_root_node = TaxaTree()
+  pruned_tree_root_node.isRoot()
+
   for taxonomy_id in taxonomy_ids_of_reference_genomes:
     # we start with the taxonomy id of that genome
     cur_id = taxonomy_id
-    # and until we hit the root node,
-    while taxonomy_id_to_parent_id[cur_id] != 1:       
+    # and until we run into a dead-end and can't go any further (hopefully it is the root)
+    while cur_id in taxonomy_id_to_parent_id and taxonomy_id_to_parent_id[cur_id] != 1:       
       # we copy over this key-value (child node to parent node) pair to pruned tree
-      pruned_taxonomy_id_to_parent_id[taxonomy_id] = taxonomy_id_to_parent_id[taxonomy_id]
-      # now we chase the parent node's parent, iteratively, until we hit the root
-      cur_id = taxonomy_id_to_parent_id[taxonomy_id]
+      pruned_taxonomy_id_to_parent_id[cur_id] = taxonomy_id_to_parent_id[cur_id]
+
+      # TODO finish here      
+      # cur_node = 
+      
+      # now we chase the parent node's parent, iteratively, until we hit the root, or another dead-end
+      cur_id = taxonomy_id_to_parent_id[cur_id]
+
+    # finally add the root node like as the last link in this upward chain up the branch
+    pruned_taxonomy_id_to_parent_id[cur_id] = taxonomy_id_to_parent_id[cur_id]
+    # and add the final node link too, linking to the root node
+    # trusting that both dictionaries are maintained identical in parallel so there are no KeyErrors
+
+    # TODO finish here
+    # cur_node.
+
+    
+
   # at the end we've added only those paths in the tree
   # that are necessary for our taxonomic classification purposes
   # (i.e. leaf nodes are only those ~20 reference genomes,
   # or however many we choose to have)
 
+  # # TODO the below needs recalibrated with the above code which is correct
+  # # TODO finish Jennifer's approach of pruning the node subtree too
+  # # if there are paths that don't reach the root that is fine, they are just disconnected
+  # # you can leave them disconnected but they should be connected
+  # pruned_taxonomy_id_to_node = {}
+  # for taxonomy_id in taxonomy_ids_of_reference_genomes:
+  #   # we start with the taxonomy id of that genome
+  #   cur_id = taxonomy_id
+  #   # and until we run into a dead-end and can't go any further (hopefully it is the root)
+  #   while cur_id in taxonomy_id_to_node and taxonomy_id_to_node[cur_id] != root_node:       
+  #     # we copy over this key-value (child node to parent node) pair to pruned tree
+  #     pruned_taxonomy_id_to_node[taxonomy_id] = taxonomy_id_to_node[taxonomy_id]
+  #     # now we chase the parent node's parent, iteratively, until we hit the root
+  #     cur_id = taxonomy_id_to_parent_id[taxonomy_id]
   
 
   # and return the gathered tree information about the
