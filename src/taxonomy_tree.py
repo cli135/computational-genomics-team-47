@@ -173,19 +173,29 @@ def build_parent_map():
     orphan_node = parents_unseen[tax_id]
     # check again whether the parent is now in the set (i.e. if they appeared
     # out of order in the nodes.dmp file)
-    # if the parent node is in the set,
+    # if the parent node is actually in the set (i.e. was created and found later in the file),
     if orphan_node.parentTaxId in taxonomy_id_to_node:
-      # then great, the orphan is no longer an orphan in the tree!
-      # we can go ahead and update bidirectional links as normal
-
-
+      # then great, we found the parent, and the orphan is
+      # no longer an orphan in the tree, in terms of nodes!
+      # we can go ahead and update bidirectional links of the child
+      # and parent nodes as in the normal case:
+      orphan_node.parent = taxonomy_id_to_node[orphan_node.parentTaxId] # make the child no longer an orphan
+      taxonomy_id_to_node[orphan_node.parentTaxId].add_child(orphan_node) # make the parent no longer childless      
     else:
-       print(f"""A parent node of tax_id node {tax_id} was not found
+      # If the parent node wasn't found anywhere in the file, even later, then this is
+      # truly an orphan node and we canont resolve this issue, so we report it
+      print(f"""A parent node of orphaned tax_id node {tax_id} was not found
              in the nodes.dmp file: the unfound parent is {curr_node.parentTaxId}""")
-       
+  
+  # Moving on to the next step, which is pruning unused branches of the taxonomy tree
+  # i.e. the taxonomy tree is not deep (~7 ranks) but it is very, very wide, it is
+  # the taxonomic tree of the entire tree of life on Earth
+  # it is so big that it would be advantageous to include only those root to leaf paths
+  # that are actually used and hit by the sequences in the reference genomes (~20 genomes), so
+  # this step may involve pruning the taxonomic tree to make it small enough for ideally
+  # a smaller memory usage
 
-
-
+  # TODO prune taxonomic tree and output pruned tree information to a file to be read later
 
 
 
