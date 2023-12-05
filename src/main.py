@@ -1,4 +1,5 @@
 import os
+import sys
 import argparse
 from typing import List, Dict
 
@@ -18,6 +19,13 @@ def parse_args():
     default="genomes-of-common-contaminants",
     help="Name of the directory containing the database of known contaminants \
       which you want to cross-check the input sequence for (default: genomes-of-common-contaminants)"
+  )
+
+  parse.add_argument(
+    "--taxonomy",
+    default="taxonomy",
+    help="Name of the directory containing the taxonomy (including names.dmp and nodes.dmp) \
+      (default: taxonomy)"
   )
 
   parse.add_argument(
@@ -59,7 +67,11 @@ def main():
 
   # Step 1. Build the taxonomy
   # This method is found in the taxonomy_tree.py file
-  taxonomy_id_to_node, taxonomy_id_to_parent_id, root_node = taxonomy_tree.build_parent_map()
+  pruned_taxonomy_id_to_node, pruned_taxonomy_id_to_parent_id, pruned_tree_root_node = \
+    taxonomy_tree.build_parent_map(
+      taxonomy_directory=args.taxonomy,
+      custom_taxonomy_ids_filename=args.taxonomy_ids
+    )
 
   # Step 2. After the parent map (i.e. taxonomy tree) is built in taxonomy_tree.py,
   # We will build the database with actual cross-references to kmers and lcas

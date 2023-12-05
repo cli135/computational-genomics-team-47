@@ -48,19 +48,19 @@ Jaeyoon Wang
 
 # TaxaTree data structure representing nodes in taxonomy
 class TaxaTree:
-    def __init__(self, tax_id : int, rank="", parent = None, children = [], name = "", isRoot = False):
+    def __init__(self, tax_id : str, rank="", parent = None, children = [], name = "", isRoot = False):
         # Node's own taxid, name, and rank
-        self.tax_id : int = tax_id
+        self.tax_id : str = tax_id
         self.name = name
         self.rank = rank
 
         # Setting Parent
         self.parent = parent
-        self.parentTaxId : int = -1
+        self.parentTaxId : str = '-1'
 
         # Children
         self.children = children
-        self.childrenTaxId : List[int] = []
+        self.childrenTaxId : List[str] = []
 
 
     def add_child(self, child_node):
@@ -113,8 +113,8 @@ parents_unseen = {}
 # following forward pointers and backpointers in the n-ary tree like a deque
 # i.e. bidirectional links
 
-def build_parent_map(custom_taxonomy_ids_filename : str) -> \
-  Tuple[Dict[int, TaxaTree], Dict[int, int], TaxaTree]:
+def build_parent_map(taxonomy_directory : str, custom_taxonomy_ids_filename : str) -> \
+  Tuple[Dict[str, TaxaTree], Dict[str, str], TaxaTree]:
   """
   This method is based off of methods at the below two links:
   https://github.com/DerrickWood/kraken/blob/master/src/krakenutil.cpp
@@ -132,17 +132,17 @@ def build_parent_map(custom_taxonomy_ids_filename : str) -> \
       which is the pruned taxonomic tree data, pruned to contain leaves that are only
       and exactly the ~20 reference genomes in the database of genomes-of-common-contaminants
   """
-  
-  nodes_dmp_file_handle = open('../taxonomy/nodes.dmp', 'r')
-  # finish soon
-  
+  # Opening nodes.dmp file in the taxonomy directory given to us
+  nodes_dmp_file_handle = open(os.path.join(taxonomy_directory, 'nodes.dmp'), 'r')
+
   count_num_nodes = 0
   root_node = None # to be updated later with the first line containing the root node with taxonomy id 1
-  # Iterating over the nodes.dmp (1st column in t)xId, 2nd column is the 1st col's parent's taxId
+  # Iterating over the nodes.dmp (1st column is taxId, 2nd column is the 1st col's parent's taxId
   for line in nodes_dmp_file_handle:
     # Increment total number of nodes we've seen so far
     count_num_nodes += 1
 
+    # Print progress to stdout
     if count_num_nodes % 1000 == 0:
        sys.stdout.write(f"\r\t{count_num_nodes} lines processed so far")
 
@@ -240,7 +240,7 @@ def build_parent_map(custom_taxonomy_ids_filename : str) -> \
 
   # let's start with only the ID tree that Derrick Wood uses
   
-  taxonomy_ids_of_reference_genomes : List[int] = get_taxonomy_ids_from_file(custom_taxonomy_ids_filename)
+  taxonomy_ids_of_reference_genomes : List[str] = get_taxonomy_ids_from_file(custom_taxonomy_ids_filename)
   pruned_taxonomy_id_to_parent_id = {}
   
   # building the pruned tree by copying over only those branches
@@ -266,9 +266,7 @@ def build_parent_map(custom_taxonomy_ids_filename : str) -> \
     
   # doing the nodes now
 
-  # TODO 1 or '1' here?
-  pruned_tree_root_node = TaxaTree(1)
-  pruned_tree_root_node.isRoot()
+  # TODO 1 or '1'?
   pruned_taxonomy_id_to_node = {}
 
   for taxonomy_id in taxonomy_ids_of_reference_genomes:
@@ -325,6 +323,7 @@ def build_parent_map(custom_taxonomy_ids_filename : str) -> \
   # TODO make sure this is returning everything that needs to be returned
   # TODO make all the return values pruned, including the first one
   pruned_tree_root_node = pruned_taxonomy_id_to_node['1']
+  pruned_tree_root_node.isRoot()
   print(pruned_taxonomy_id_to_node)
   print(pruned_taxonomy_id_to_parent_id)
   print(pruned_tree_root_node)
@@ -365,7 +364,7 @@ def get_fasta_ncbi_accession_ids(database_directory : str) -> List[str]:
   return ncbi_accession_ids
 
 
-def get_taxonomy_ids() -> List[int]:
+def get_taxonomy_ids() -> List[str]:
   """
   Given a list of NCBI accession IDs (from the get_fasta_ncbi_accession_ids() method)
   return the corresponding taxonomy IDs of those genomes.
@@ -377,7 +376,7 @@ def get_taxonomy_ids() -> List[int]:
   pass
 
 
-def get_taxonomy_ids_from_file(custom_taxonomy_ids_filename) -> List[int]:
+def get_taxonomy_ids_from_file(custom_taxonomy_ids_filename : str) -> List[str]:
   """
   Load a custom list of taxonomy IDs from a file.
 
@@ -394,19 +393,20 @@ def get_taxonomy_ids_from_file(custom_taxonomy_ids_filename) -> List[int]:
     for line in fp.readlines():
       tokens = line.strip().split()
       tax_id = tokens[1]
-      try:
-        int_tax_id = int(tax_id)
-        # append int taxonomy id to the list
-        taxonomy_ids_of_reference_genomes.append(tax_id)
-      except ValueError:
-        print("Couldn't cast tax_id to integer value")
+      taxonomy_ids_of_reference_genomes.append(tax_id)
+      # try:
+      #   int_tax_id = int(tax_id)
+      #   # append int taxonomy id to the list
+      #   taxonomy_ids_of_reference_genomes.append(tax_id)
+      # except ValueError:
+      #   print("Couldn't cast tax_id to integer value")
   return taxonomy_ids_of_reference_genomes
 
 
 def main():
   # print(get_fasta_ncbi_accession_ids("genomes-of-common-contaminants"))
   # filenames have underscores (snake), directories have dashes (kebab)
-  build_parent_map("../taxonomy/custom_taxonomy_ids.txt")
+  build_parent_map("../taxonomy", "../taxonomy/custom_taxonomy_ids.txt")
 
 
 if __name__ == "__main__":
