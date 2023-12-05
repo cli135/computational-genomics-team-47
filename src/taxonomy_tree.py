@@ -37,6 +37,15 @@ Jaeyoon Wang
 
 """
 
+# TODO I need to clean up the distinction between '1' and 1, i.e. strings and ints
+# for the taxonomy id. They are basically all strings right now (e.g. '13547' instead of 13547
+# except for a couple of cases where I need to fix them,
+# especially with the type signatures given below which are probably incorrectly
+# saying they ought to be ints)
+# and I am fine with taxonomy ids being strings instead of ints
+# since it appears that Python can handle the larger memory size just fine
+# and less type casting is required this way
+
 # TaxaTree data structure representing nodes in taxonomy
 class TaxaTree:
     def __init__(self, tax_id : int, rank="", parent = None, children = [], name = "", isRoot = False):
@@ -320,6 +329,7 @@ def build_parent_map(custom_taxonomy_ids_filename : str) -> \
   print(pruned_taxonomy_id_to_parent_id)
   print(pruned_tree_root_node)
   return pruned_taxonomy_id_to_node, pruned_taxonomy_id_to_parent_id, pruned_tree_root_node
+
 
 
 def get_fasta_ncbi_accession_ids(database_directory : str) -> List[str]:

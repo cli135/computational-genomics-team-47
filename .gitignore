@@ -1,3 +1,5 @@
 *.dmp
-.idea/misc.xml
+.idea/*.xml
+*.xml
+*.iml
 .ideo
