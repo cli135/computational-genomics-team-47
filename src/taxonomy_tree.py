@@ -4,6 +4,8 @@ from time import strftime
 from typing import List
 
 """
+taxonomy_tree.py
+
 Takes the nodes.dmp, names.dmp, and the accession2taxid as the input and creates a taxonomy tree
 that we can later use to determine the relatives of a certain taxid.
 
@@ -11,6 +13,26 @@ References
 ----------
 This code is inspired from Jennifer Lu's code linked below
 https://github.com/jenniferlu717/KrakenTools/blob/master/make_ktaxonomy.py
+
+How to run
+----------
+
+$ python src/taxonomy_tree.py
+
+The above line is for if you want to call and test this script directly.
+
+Otherwise, this script is designed to be part of the larger program in main.py,
+so it will be automatically used in calls to main.py and other files in the program.
+
+Authors
+-------
+
+Computational Genomics Team 47:
+Dhruv Dubey
+Mitra Harpale
+Christopher Li
+Jaeyoon Wang
+
 """
 
 # TaxaTree data structure representing nodes in taxonomy
@@ -104,7 +126,7 @@ def build_parent_map():
     count_num_nodes += 1
 
     if count_num_nodes % 1000 == 0:
-       print(f"\r\t{count_num_nodes} lines processed so far")
+       sys.stdout.write(f"\r\t{count_num_nodes} lines processed so far")
 
     # Spliting the line we are on
     tokens = line.strip().split('\t|\t')
@@ -166,7 +188,7 @@ def build_parent_map():
       # current_node.tax_id = current_taxonomy_id
 
   nodes_dmp_file_handle.close()
-  print("All lines processed in the nodes.dmp file")
+  print("\nAll lines processed in the nodes.dmp file")
 
   # Create any parents that were unseen or appeared out of order in the nodes.dmp file
   for tax_id in parents_unseen:

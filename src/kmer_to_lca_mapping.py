@@ -1,6 +1,48 @@
 import taxonomy_tree
 from taxonomy_tree import TaxaTree
 
+"""
+kmer_to_lca_mapping.py
+
+Takes the taxonomy tree (taxonomy_id_to_node, taxonomy_id_to_parent_id, and root_node
+from Step 1.) taxonomy_tree.py) as the input and creates a dictionary mapping, kmer_to_lca_mapping, 
+that we can later use to lookup the least common ancestor taxonomic node of all the taxonomic nodes
+that a particular given k-mer appears in.
+
+Notably, this step involves actually going over the ~20 reference genomes of common contaminants
+(i.e. Mycoplasma, E.coli lambda page phiX174, etc.) and doing offline-preprocessing over all kmers
+in the reference genomes there.
+
+The genomes total in about ~90 MB in file size so this should be manageable in terms of memory and speed.
+
+References
+----------
+This code is inspired from Jennifer Lu's code linked below
+https://github.com/jenniferlu717/KrakenTools/blob/master/make_ktaxonomy.py
+
+How to run
+----------
+
+$ python src/kmer_to_lca_mapping.py
+
+The above line is for if you want to call and test this script directly.
+This currently has no functionality (as it is not necessary to call it directly for now)
+but might be implemented later if we need to do this.
+
+Otherwise, this script is designed to be part of the larger program in main.py,
+so it will be automatically used in calls to main.py and other files in the program.
+
+Authors
+-------
+
+Computational Genomics Team 47:
+Dhruv Dubey
+Mitra Harpale
+Christopher Li
+Jaeyoon Wang
+
+"""
+
 # Step 2. After the parent map (i.e. taxonomy tree) is built in taxonomy_tree.py,
 # We will build the database with actual cross-references to kmers and lcas
 def build_database():
