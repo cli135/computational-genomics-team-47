@@ -23,3 +23,15 @@ def build_database():
     # for each distinct k-mer
       # update the LCA dictionary with the LCA of the existing value and this value
   pass
+
+def lca(first_taxonomy_id : int, second_taxonomy_id : int) -> int:
+  """
+  Compute the least common ancestor of the nodes in the tree
+  with taxonomy id first_taxonomy_id and second_taxonomy_id.
+
+  Some notes / invariants about this function:
+
+    lca(a, b) = lca(b, a) # symmetry
+    lca("0", a)
+  """
+  

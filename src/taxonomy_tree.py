@@ -1,6 +1,7 @@
 import os, sys, argparse
 from time import gmtime
 from time import strftime 
+from typing import List
 
 """
 Takes the nodes.dmp, names.dmp, and the accession2taxid as the input and creates a taxonomy tree
@@ -8,25 +9,25 @@ that we can later use to determine the relatives of a certain taxid.
 
 References
 ----------
-Code inspired from Jen Lu's code linked below
+This code is inspired from Jennifer Lu's code linked below
 https://github.com/jenniferlu717/KrakenTools/blob/master/make_ktaxonomy.py
 """
 
 # TaxaTree data structure representing nodes in taxonomy
 class TaxaTree:
-    def __init__(self, tax_id, rank, parent = None, children = [], name = "", isRoot = False):
+    def __init__(self, tax_id : int, rank, parent = None, children = [], name = "", isRoot = False):
         # Node's own taxid, name, and rank
-        self.tax_id = tax_id
+        self.tax_id : int = tax_id
         self.name = name
         self.rank = rank
 
         # Setting Parent
         self.parent = parent
-        self.parentTaxId = -1
+        self.parentTaxId : int = -1
 
         # Children
         self.children = children
-        self.childrenTaxId = []
+        self.childrenTaxId : List[int] = []
 
 
     def add_child(self, child_node):
@@ -197,8 +198,10 @@ def build_parent_map():
 
   # TODO prune taxonomic tree and output pruned tree information to a file to be read later
 
-
-
+  # and return the gathered tree information about the
+  # taxonomic tree so that it doesn't have to be loaded in memory again
+  # TODO make sure this is returning everything that needs to be returned
+  return taxonomy_id_to_node, taxonomy_id_to_parent_id, root_node
 
 def main():
   build_parent_map()

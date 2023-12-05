@@ -7,7 +7,12 @@ computational-genomics-team-47 Fall 2023 - Dr. Langmead's Computational Genomics
 - `taxonomy` contains:
   - `nodes.dmp` (~243 MB) which is a file of the taxonomy of all organisms in the tree of life, each represented with a unique integer taxonomy id.
   - `names.dmp` (~183 MB) which maps each integer taxonomy id to the common plaintext name of the species.
- 
+
+## Dependencies
+### `python` 3
+### `pip`
+- None so far.
+
 ## Authors
 - Dhruv Dubey
 - Mitra Harpale
