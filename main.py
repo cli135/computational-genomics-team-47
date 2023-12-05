@@ -2,7 +2,8 @@ import os
   
 def build_parent_map():
   file_handle = open('nodes.dmp')
-  # finish soon
+  # TODO finish soon
+
 
 def build_database():
   """
@@ -14,7 +15,9 @@ def build_database():
     kmer_to_lca[kmer] = lca(kmer_to_lca[kmer], curr_taxonomy_id)
   
   the least commmon ancestor of the current value in kmer_to_lca dictionary
-  and the 
+  and the current taxonomy id of the node that the kmer was just found in.
+
+  This is like accumulating the LCA iteratively as we go across all the kmers.
   
   Keyword arguments:
   argument -- description
@@ -29,8 +32,6 @@ def build_database():
     # for each distinct k-mer
       # update the LCA dictionary with the LCA of the existing value and this value
   pass
-
-
 
 
 def main():
