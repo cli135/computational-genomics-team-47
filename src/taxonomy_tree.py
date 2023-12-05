@@ -237,33 +237,54 @@ def build_parent_map(custom_taxonomy_ids_filename : str) -> \
   # building the pruned tree by copying over only those branches
   # that contain the 20 reference genomes
   # for the taxonomy_id of each of the ~20 reference genomes,
-  
-  pruned_tree_root_node = TaxaTree()
-  pruned_tree_root_node.isRoot()
 
   for taxonomy_id in taxonomy_ids_of_reference_genomes:
-    # we start with the taxonomy id of that genome
+    # we start with the taxonomy id of that genome, which is a leaf
     cur_id = taxonomy_id
-    # and until we run into a dead-end and can't go any further (hopefully it is the root)
-    while cur_id in taxonomy_id_to_parent_id and taxonomy_id_to_parent_id[cur_id] != 1:       
+    # and until we run into a dead-end and can't go any further (hopefully it is the root which has id 1)
+    while cur_id in taxonomy_id_to_parent_id and cur_id != 1:       
       # we copy over this key-value (child node to parent node) pair to pruned tree
       pruned_taxonomy_id_to_parent_id[cur_id] = taxonomy_id_to_parent_id[cur_id]
 
-      # TODO finish here      
-      # cur_node = 
+      # TODO finish here
+      # parent_id = taxonomy_id_to_parent_id[cur_id]
+      # parent_node = taxonomy_id_to_node[parent_id]
+      # cur_node = TaxaTree(cur_id, parent=parent_node)
       
       # now we chase the parent node's parent, iteratively, until we hit the root, or another dead-end
       cur_id = taxonomy_id_to_parent_id[cur_id]
-
-    # finally add the root node like as the last link in this upward chain up the branch
-    pruned_taxonomy_id_to_parent_id[cur_id] = taxonomy_id_to_parent_id[cur_id]
-    # and add the final node link too, linking to the root node
-    # trusting that both dictionaries are maintained identical in parallel so there are no KeyErrors
-
-    # TODO finish here
-    # cur_node.
-
     
+  # doing the nodes now
+  
+  pruned_tree_root_node = TaxaTree(1)
+  pruned_tree_root_node.isRoot()
+  pruned_taxonomy_id_to_node = {}
+
+  for taxonomy_id in taxonomy_ids_of_reference_genomes:
+    # we start with the taxonomy id of that genome, which is a leaf
+    cur_id = taxonomy_id
+    # and until we run into a dead-end and can't go any further (hopefully it is the root)
+    while cur_id in pruned_taxonomy_id_to_parent_id and cur_id != 1:
+      parent_id = pruned_taxonomy_id_to_parent_id[cur_id]
+      parent_node = None # init
+      if parent_id not in pruned_taxonomy_id_to_node:
+        # we create the parent
+        parent_node = TaxaTree(taxonomy_id_to_parent_id[cur_id])
+      else:
+        # we get the parent
+        parent_node = pruned_taxonomy_id_to_node[parent_id]
+      if cur_id not in pruned_taxonomy_id_to_node:
+        # we create the node
+        pruned_taxonomy_id_to_node[cur_id] = TaxaTree(cur_id)
+      else:
+        # we get the node
+        pass
+      # like a doubly-linked-list, forward pointer and backpointer
+      pruned_taxonomy_id_to_node[cur_id].parent = parent_node
+      parent_node.children.append(pruned_taxonomy_id_to_node[cur_id])
+
+      # iterate up the tree
+      cur_id = parent_id
 
   # at the end we've added only those paths in the tree
   # that are necessary for our taxonomic classification purposes
@@ -290,7 +311,8 @@ def build_parent_map(custom_taxonomy_ids_filename : str) -> \
   # taxonomic tree so that it doesn't have to be loaded in memory again
   # TODO make sure this is returning everything that needs to be returned
   # TODO make all the return values pruned, including the first one
-  return taxonomy_id_to_node, pruned_taxonomy_id_to_parent_id, pruned_tree_root_node
+  pruned_tree_root_node = pruned_taxonomy_id_to_node[1]
+  return pruned_taxonomy_id_to_node, pruned_taxonomy_id_to_parent_id, pruned_tree_root_node
 
 
 def get_fasta_ncbi_accession_ids(database_directory : str) -> List[str]:
