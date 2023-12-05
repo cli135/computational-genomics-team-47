@@ -6,6 +6,8 @@ from typing import List
 """
 taxonomy_tree.py
 
+Step 1.)
+
 Takes the nodes.dmp, names.dmp, and the accession2taxid as the input and creates a taxonomy tree
 that we can later use to determine the relatives of a certain taxid.
 

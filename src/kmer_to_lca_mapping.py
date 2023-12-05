@@ -4,6 +4,8 @@ from taxonomy_tree import TaxaTree
 """
 kmer_to_lca_mapping.py
 
+Step 2.)
+
 Takes the taxonomy tree (taxonomy_id_to_node, taxonomy_id_to_parent_id, and root_node
 from Step 1.) taxonomy_tree.py) as the input and creates a dictionary mapping, kmer_to_lca_mapping, 
 that we can later use to lookup the least common ancestor taxonomic node of all the taxonomic nodes
