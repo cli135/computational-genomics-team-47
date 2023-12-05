@@ -20,6 +20,14 @@ def parse_args():
   )
 
   parse.add_argument(
+    "--taxonomy-ids",
+    default="taxonomy/custom_taxonomy_ids.txt",
+    help="Name of the plaintext file (default: taxonomy/custom_taxonomy_ids.txt) which contains taxonomy ids sourced \
+      from NCBI corresponding to the NCBI accession IDs of the FASTA files in \
+      the database"
+  )
+
+  parse.add_argument(
     "--input-query",
     required=True, # this argument is required since we need to know which sequence to search for contaminants in
     help="Filename of the sequence in which the program will search for contaminants (required)"

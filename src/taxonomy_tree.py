@@ -230,29 +230,63 @@ def build_parent_map():
   # TODO make sure this is returning everything that needs to be returned
   return taxonomy_id_to_node, taxonomy_id_to_parent_id, root_node
 
-def get_fasta_ncbi_accession_ids() -> List[str]:
+
+def get_fasta_ncbi_accession_ids(database_directory : str) -> List[str]:
   """
   Goes through the genomes-of-common-contaminants directory and gets all of the accession IDs
   of the FASTA genome files.
+
+  @param: database_directory (a string of the folder where the reference genomes are
+    fed in through the command line argument --db)
+  
+  @return: a list of NCBI accession ID strings
+  """
+  ncbi_accession_ids = []
+  
+  # for each FASTA file
+  for f in os.listdir(database_directory):
+    
+    # get the NCBI accession id for this FASTA file
+    with open(os.path.join(database_directory, f), 'r') as fasta_file_handle:
+      # getting the first token of the first line, which is the NCBI accession ID
+      # e.g. NC_045512.2
+      # is the NCBI accession ID for COVID-19 RefSeq complete genome
+      first_token = fasta_file_handle.readline().strip().split()[0]      
+      if first_token.startswith(">"):
+         first_token = first_token[1:]
+      else:
+         print("Error: FASTA file first line of reference genome does not begin with '>'")
+      cur_id = first_token
+      ncbi_accession_ids.append(cur_id)
+
+  # return the NCBI accession IDs of the reference genomes
+  # in the database directory (which is by default "genomes-of-common-contaminants")
+  return ncbi_accession_ids
+
+
+def get_taxonomy_ids() -> List[int]:
+  """
+  Given a list of NCBI accession IDs (from the get_fasta_ncbi_accession_ids() method)
+  return the corresponding taxonomy IDs of those genomes.
+  """
+  # get the taxonomy id for this FASTA file
+
+
+def get_taxonomy_ids_from_file(taxonomy_ids_file) -> List[int]:
+  """
+  Load a custom list of taxonomy IDs from a file.
+
+  This removes the need to search the large file
+  nucl_wgs.accession2taxid.gz (~37 GB uncompressed)
+  for just the 20 genomes that we want to classify contaminants in.
   """
   pass
-  # for each FASTA file
-  for f in os.listdir("./"):
-    # get the NCBI accession id for this FASTA file
-    with open(f, 'r') as fasta_file_handle:
-      first_line = fasta_file_handle.readline().strip()
-      if not first_line.startswith(">"):
-         print("Error: FASTA file first line of reference genome does not begin with '>'")
-
-    # get the taxonomy id for this FASTA file
-    pass
-
-
-
+   
    
 
 def main():
-  build_parent_map()
+  print(get_fasta_ncbi_accession_ids("genomes-of-common-contaminants"))
+  # build_parent_map()
 
 if __name__ == "__main__":
   main()
