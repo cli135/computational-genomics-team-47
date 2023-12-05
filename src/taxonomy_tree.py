@@ -272,7 +272,7 @@ def get_taxonomy_ids() -> List[int]:
   # get the taxonomy id for this FASTA file
 
 
-def get_taxonomy_ids_from_file(taxonomy_ids_file) -> List[int]:
+def get_taxonomy_ids_from_file(custom_taxonomy_ids_filename) -> List[int]:
   """
   Load a custom list of taxonomy IDs from a file.
 
@@ -280,13 +280,21 @@ def get_taxonomy_ids_from_file(taxonomy_ids_file) -> List[int]:
   nucl_wgs.accession2taxid.gz (~37 GB uncompressed)
   for just the 20 genomes that we want to classify contaminants in.
   """
-  pass
-   
-   
+  taxonomy_ids_of_reference_genomes = []
+  # using the custom seqid2taxid instead of searching the whole 37 GB mapping at
+  # https://ftp.ncbi.nlm.nih.gov/pub/taxonomy/accession2taxid/
+  with open(custom_taxonomy_ids_filename, 'r') as fp:
+    for line in fp.readlines():
+      tokens = line.strip.split()
+      tax_id = tokens[1]
+      taxonomy_ids_of_reference_genomes.append(tax_id)
+  return taxonomy_ids_of_reference_genomes
+
 
 def main():
   print(get_fasta_ncbi_accession_ids("genomes-of-common-contaminants"))
   # build_parent_map()
+
 
 if __name__ == "__main__":
   main()
