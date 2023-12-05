@@ -39,7 +39,7 @@ Jaeyoon Wang
 
 # TaxaTree data structure representing nodes in taxonomy
 class TaxaTree:
-    def __init__(self, tax_id : int, rank, parent = None, children = [], name = "", isRoot = False):
+    def __init__(self, tax_id : int, rank="", parent = None, children = [], name = "", isRoot = False):
         # Node's own taxid, name, and rank
         self.tax_id : int = tax_id
         self.name = name
@@ -124,7 +124,7 @@ def build_parent_map(custom_taxonomy_ids_filename : str) -> \
       and exactly the ~20 reference genomes in the database of genomes-of-common-contaminants
   """
   
-  nodes_dmp_file_handle = open('./taxonomy/nodes.dmp', 'r')
+  nodes_dmp_file_handle = open('../taxonomy/nodes.dmp', 'r')
   # finish soon
   
   count_num_nodes = 0
@@ -242,7 +242,8 @@ def build_parent_map(custom_taxonomy_ids_filename : str) -> \
     # we start with the taxonomy id of that genome, which is a leaf
     cur_id = taxonomy_id
     # and until we run into a dead-end and can't go any further (hopefully it is the root which has id 1)
-    while cur_id in taxonomy_id_to_parent_id and cur_id != 1:       
+    # the string '1' vs the int 1 is an important distinction that was making it an infinite loop earlier
+    while cur_id in taxonomy_id_to_parent_id and cur_id != '1':
       # we copy over this key-value (child node to parent node) pair to pruned tree
       pruned_taxonomy_id_to_parent_id[cur_id] = taxonomy_id_to_parent_id[cur_id]
 
@@ -255,7 +256,8 @@ def build_parent_map(custom_taxonomy_ids_filename : str) -> \
       cur_id = taxonomy_id_to_parent_id[cur_id]
     
   # doing the nodes now
-  
+
+  # TODO 1 or '1' here?
   pruned_tree_root_node = TaxaTree(1)
   pruned_tree_root_node.isRoot()
   pruned_taxonomy_id_to_node = {}
@@ -264,18 +266,20 @@ def build_parent_map(custom_taxonomy_ids_filename : str) -> \
     # we start with the taxonomy id of that genome, which is a leaf
     cur_id = taxonomy_id
     # and until we run into a dead-end and can't go any further (hopefully it is the root)
-    while cur_id in pruned_taxonomy_id_to_parent_id and cur_id != 1:
+    while cur_id in pruned_taxonomy_id_to_parent_id and cur_id != '1':
       parent_id = pruned_taxonomy_id_to_parent_id[cur_id]
       parent_node = None # init
       if parent_id not in pruned_taxonomy_id_to_node:
         # we create the parent
-        parent_node = TaxaTree(taxonomy_id_to_parent_id[cur_id])
+        parent_node = TaxaTree(parent_id)
+        pruned_taxonomy_id_to_node[parent_id] = parent_node
       else:
         # we get the parent
         parent_node = pruned_taxonomy_id_to_node[parent_id]
       if cur_id not in pruned_taxonomy_id_to_node:
         # we create the node
         pruned_taxonomy_id_to_node[cur_id] = TaxaTree(cur_id)
+        pruned_taxonomy_id_to_node[parent_id] = parent_node
       else:
         # we get the node
         pass
@@ -311,7 +315,10 @@ def build_parent_map(custom_taxonomy_ids_filename : str) -> \
   # taxonomic tree so that it doesn't have to be loaded in memory again
   # TODO make sure this is returning everything that needs to be returned
   # TODO make all the return values pruned, including the first one
-  pruned_tree_root_node = pruned_taxonomy_id_to_node[1]
+  pruned_tree_root_node = pruned_taxonomy_id_to_node['1']
+  print(pruned_taxonomy_id_to_node)
+  print(pruned_taxonomy_id_to_parent_id)
+  print(pruned_tree_root_node)
   return pruned_taxonomy_id_to_node, pruned_taxonomy_id_to_parent_id, pruned_tree_root_node
 
 
@@ -375,7 +382,7 @@ def get_taxonomy_ids_from_file(custom_taxonomy_ids_filename) -> List[int]:
     # getting the second column of each line,
     # which is the taxonomy ID of that accession ID
     for line in fp.readlines():
-      tokens = line.strip.split()
+      tokens = line.strip().split()
       tax_id = tokens[1]
       try:
         int_tax_id = int(tax_id)
@@ -388,7 +395,8 @@ def get_taxonomy_ids_from_file(custom_taxonomy_ids_filename) -> List[int]:
 
 def main():
   # print(get_fasta_ncbi_accession_ids("genomes-of-common-contaminants"))
-  build_parent_map()
+  # filenames have underscores (snake), directories have dashes (kebab)
+  build_parent_map("../taxonomy/custom_taxonomy_ids.txt")
 
 
 if __name__ == "__main__":
