@@ -210,22 +210,46 @@ def build_parent_map():
       # If the parent node wasn't found anywhere in the file, even later, then this is
       # truly an orphan node and we canont resolve this issue, so we report it
       print(f"""A parent node of orphaned tax_id node {tax_id} was not found
-             in the nodes.dmp file: the unfound parent is {curr_node.parentTaxId}""")
+             in the nodes.dmp file: the unfound parent is {orphan_node.parentTaxId}""")
   
   # Moving on to the next step, which is pruning unused branches of the taxonomy tree
-  # i.e. the taxonomy tree is not deep (~7 ranks) but it is very, very wide, it is
-  # the taxonomic tree of the entire tree of life on Earth
-  # it is so big that it would be advantageous to include only those root to leaf paths
+  # i.e. the taxonomy tree is not deep (~7 ranks: kingdom, phylum, ..., genus, species)
+  # but it is very, very wide, it is the taxonomic tree of the entire tree of life on Earth
+  # The tree is so big that it would be advantageous to include only those root to leaf paths
   # that are actually used and hit by the sequences in the reference genomes (~20 genomes), so
   # this step may involve pruning the taxonomic tree to make it small enough for ideally
   # a smaller memory usage
 
   # TODO prune taxonomic tree and output pruned tree information to a file to be read later
 
+
+  
+
   # and return the gathered tree information about the
   # taxonomic tree so that it doesn't have to be loaded in memory again
   # TODO make sure this is returning everything that needs to be returned
   return taxonomy_id_to_node, taxonomy_id_to_parent_id, root_node
+
+def get_fasta_ncbi_accession_ids() -> List[str]:
+  """
+  Goes through the genomes-of-common-contaminants directory and gets all of the accession IDs
+  of the FASTA genome files.
+  """
+  pass
+  # for each FASTA file
+  for f in os.listdir("./"):
+    # get the NCBI accession id for this FASTA file
+    with open(f, 'r') as fasta_file_handle:
+      first_line = fasta_file_handle.readline().strip()
+      if not first_line.startswith(">"):
+         print("Error: FASTA file first line of reference genome does not begin with '>'")
+
+    # get the taxonomy id for this FASTA file
+    pass
+
+
+
+   
 
 def main():
   build_parent_map()

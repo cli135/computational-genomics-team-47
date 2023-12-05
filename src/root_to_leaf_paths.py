@@ -19,6 +19,6 @@ def find_likely_contaminant(root_to_leaf_path):
   
   @return: leaf node of this root to leaf path
   """
-  # TODO
-  pass
-  
+  # TODO implement me!
+  raise NotImplementedError()
+

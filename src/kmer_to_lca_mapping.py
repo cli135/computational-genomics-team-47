@@ -1,5 +1,7 @@
+import os
 import taxonomy_tree
 from taxonomy_tree import TaxaTree
+from typing import Dict
 
 """
 kmer_to_lca_mapping.py
@@ -47,7 +49,7 @@ Jaeyoon Wang
 
 # Step 2. After the parent map (i.e. taxonomy tree) is built in taxonomy_tree.py,
 # We will build the database with actual cross-references to kmers and lcas
-def build_database():
+def build_database() -> Dict[str, int]:
   """
   Given a directory of ~20 FASTA files with genomes of common contaminants,
   we want to traverse all kmers in the FASTA files.
@@ -60,7 +62,11 @@ def build_database():
   and the current taxonomy id of the node that the kmer was just found in.
 
   This is like accumulating the LCA iteratively as we go across all the kmers.
+
+  @return: the kmer_to_lca_mapping dictionary
   """
+  # TODO partial code below but unfinished
+
   # for each FASTA file
   for f in os.listdir("./"):
     # get the NCBI accession id for this FASTA file
@@ -70,6 +76,10 @@ def build_database():
     # for each distinct k-mer
       # update the LCA dictionary with the LCA of the existing value and this value
   pass
+
+  # TODO implement me!
+  raise NotImplementedError()
+
 
 
 def lca(taxonomy_id_to_parent_id, first_taxonomy_id : int, second_taxonomy_id : int) -> int:
@@ -87,10 +97,14 @@ def lca(taxonomy_id_to_parent_id, first_taxonomy_id : int, second_taxonomy_id : 
   This code is inspired from Derrick Wood's krakenutil.cpp code at:
   https://github.com/DerrickWood/kraken/blob/master/src/krakenutil.cpp
   """
-  pass
   # This method deals with integers only
   # So the primary use will be the dictionary taxonomy_id_to_parent_id
   # from the taxonomy_tree file
+
+  # TODO implement me!
+  raise NotImplementedError()
+
+
 
 
 def lca(root_node : TaxaTree, first_node : TaxaTree, second_node : TaxaTree) -> TaxaTree:
@@ -118,3 +132,7 @@ def lca(root_node : TaxaTree, first_node : TaxaTree, second_node : TaxaTree) -> 
   # finding the intersection of two linked lists on a leaf-to-root path
   # or any other algorithm for finding the least common ancestor of two nodes
   # in a binary tree
+
+  # TODO implement me!
+  raise NotImplementedError()
+

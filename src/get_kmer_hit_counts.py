@@ -38,3 +38,6 @@ def get_kmer_hit_counts_with_database_from_psuedoreads():
   # return the hit_counts array which is the goal of computing this method.
   # This hit_counts array will be fed into Step 4. find_highest_weighted_root_to_leaf_path()
 
+  # TODO implement me!
+  raise NotImplementedError()
+

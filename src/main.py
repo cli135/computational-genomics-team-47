@@ -83,7 +83,9 @@ def print_summary_contaminants_found():
   Prints to stdout a summary of the contamination information
   found, after the pseudoreads have been checked for in the database 
   """
-  pass
+  # TODO implement me!
+  raise NotImplementedError()
+
 
 
 if __name__ == "__main__":
