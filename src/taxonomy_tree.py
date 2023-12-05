@@ -71,8 +71,13 @@ taxonomy_id_to_node = {}
 # https://github.com/DerrickWood/kraken/blob/master/src/krakenutil.cpp
 taxonomy_id_to_parent_id = {}
 
+# new dictionary for the unlinked parents, the node's whose parents we haven't seen yet
+# in chronological order as we go down the tree
+parents_unseen = {}
+
 # redundancy in the dictionaries let us navigate both up and down the tree
 # following forward pointers and backpointers in the n-ary tree like a deque
+# i.e. bidirectional links
 
 def build_parent_map():
   """
@@ -96,6 +101,9 @@ def build_parent_map():
   for line in nodes_dmp_file_handle:
     # Increment total number of nodes we've seen so far
     count_num_nodes += 1
+
+    if count_num_nodes % 1000 == 0:
+       print(f"\r\t{count_num_nodes} lines processed so far")
 
     # Spliting the line we are on
     tokens = line.strip().split('\t|\t')
@@ -125,10 +133,6 @@ def build_parent_map():
     # This is Derrick's map - maps taxonomy ids to parent taxonomy ids
     taxonomy_id_to_parent_id[current_taxonomy_id] = parent_taxonomy_id
 
-    # new dictionary for the unlinked parents, the node's whose parents we haven't seen yet
-    # TODO wait is this supposed to go at an outer level earlier maybe not quite here
-    parents_unseen = {}
-
     # three cases below:
 
     if current_taxonomy_id == "1":
@@ -138,24 +142,51 @@ def build_parent_map():
       root_node = current_node
 
     elif parent_taxonomy_id in taxonomy_id_to_node.keys():
-      # If we've already seen the parent node before in the nodes.dmp file,
+      # If we've already seen and created the parent node before in the nodes.dmp file,
       # i.e. if we found the parent node at an earlier line
       # (a line above the current one in the nodes.dmp file)
-      # then this is great because we can link up the current node to the rest of the tree
-
+      # then this is great because we can link up the nodes bidirectionally (like a deque)
       current_node.parent = taxonomy_id_to_node[parent_taxonomy_id] # query the dict for the parent node
-      taxonomy_id_to_node[parent_taxonomy_id].add_child(current_node) # set current no
-# tnerapa eht fo dlihc eht sa e
+      taxonomy_id_to_node[parent_taxonomy_id].add_child(current_node) # set current node as the child of the parent
       
     else:
       # If we haven't seen the parent node's taxnomy id in the nodes.dmp file,
       # i.e. if the parent comes somewhere later / below in the file at a later line
-      # we have to keep track of it as a separate disconnected component in the graph / forest
+      # then we have to keep track of it as a separate disconnected component in the graph / forest
       # for now, and we will link up the disconnected islands at some point into one final
       # connected graph at a later step
-      pass
+      # i.e. we can only link up one direction for now
+      # save this for later fixing
       parents_unseen[current_taxonomy_id] = current_node
-      # add the node as normal
+      # add update the node's pointers as normal, but no opposite direction update
+      # since the parent does not exist as of yet
+      current_node.parentTaxId = parent_taxonomy_id
+      # line below unneeded for now
+      # current_node.tax_id = current_taxonomy_id
+
+  nodes_dmp_file_handle.close()
+  print("All lines processed in the nodes.dmp file")
+
+  # Create any parents that were unseen or appeared out of order in the nodes.dmp file
+  for tax_id in parents_unseen:
+    # get the current node whose parents were unseen (orphan)
+    orphan_node = parents_unseen[tax_id]
+    # check again whether the parent is now in the set (i.e. if they appeared
+    # out of order in the nodes.dmp file)
+    # if the parent node is in the set,
+    if orphan_node.parentTaxId in taxonomy_id_to_node:
+      # then great, the orphan is no longer an orphan in the tree!
+      # we can go ahead and update bidirectional links as normal
+
+
+    else:
+       print(f"""A parent node of tax_id node {tax_id} was not found
+             in the nodes.dmp file: the unfound parent is {curr_node.parentTaxId}""")
+       
+
+
+
+
 
 
 
