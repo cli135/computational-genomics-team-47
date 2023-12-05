@@ -14,7 +14,7 @@ https://github.com/jenniferlu717/KrakenTools/blob/master/make_ktaxonomy.py
 
 # TaxaTree data structure representing nodes in taxonomy
 class TaxaTree:
-    def __init__(self, tax_id, rank, parent = None, children = [], name = ""):
+    def __init__(self, tax_id, rank, parent = None, children = [], name = "", isRoot = False):
         # Node's own taxid, name, and rank
         self.tax_id = tax_id
         self.name = name
@@ -31,8 +31,10 @@ class TaxaTree:
 
     def add_child(self, child_node):
         # Two-way connection between nodes!
-        child_node.parent = self
         self.children.append(child_node)
+
+    def isRoot(self):
+        self.isRoot = True
 
     def get_parent(self):
         return self.parent
@@ -52,7 +54,10 @@ ranks_to_charRank = {
     "order": "O",
     "family": "F",
     "genus": "G",
-    "species": "S"
+    "species": "S",
+    "subspecies": "SS",
+    "subfamily": "SF",
+    "no rank": ""
 }
 
 # initializing the main dictionaries which let us navigate
@@ -86,6 +91,7 @@ def build_parent_map():
   # finish soon
   
   count_num_nodes = 0
+  root_node = None # to be updated later with the first line containing the root node with taxonomy id 1
   # Iterating over the nodes.dmp (1st column in t)xId, 2nd column is the 1st col's parent's taxId
   for line in nodes_dmp_file_handle:
     # Increment total number of nodes we've seen so far
@@ -99,9 +105,12 @@ def build_parent_map():
     current_taxonomy_id = tokens[0]
     parent_taxonomy_id = tokens[1]
     rank = tokens[2] # rank is one of "kingdom", "phylum", "class", "order", etc.
-    abbreviated_rank = ranks_to_charRank[rank] # "K", "P", "C", "O", etc.
+    
+    abbreviated_rank = ""
+    if rank in ranks_to_charRank.keys():
+      abbreviated_rank = ranks_to_charRank[rank] # "K", "P", "C", "O", etc.
 
-    # TODO: Is the current_node being created correctly? What redundancy can we 
+    # TODO: Is the current_node being created correctly? What redundancy can we remove here?
     # Create a node with the taxid and its rank
     current_node = TaxaTree(current_taxonomy_id, abbreviated_rank)
     current_node.parentTaxId = parent_taxonomy_id
@@ -116,8 +125,38 @@ def build_parent_map():
     # This is Derrick's map - maps taxonomy ids to parent taxonomy ids
     taxonomy_id_to_parent_id[current_taxonomy_id] = parent_taxonomy_id
 
-    
-    
+    # new dictionary for the unlinked parents, the node's whose parents we haven't seen yet
+    # TODO wait is this supposed to go at an outer level earlier maybe not quite here
+    parents_unseen = {}
+
+    # three cases below:
+
+    if current_taxonomy_id == "1":
+      # root node
+      current_node.isRoot()
+      # save this
+      root_node = current_node
+
+    elif parent_taxonomy_id in taxonomy_id_to_node.keys():
+      # If we've already seen the parent node before in the nodes.dmp file,
+      # i.e. if we found the parent node at an earlier line
+      # (a line above the current one in the nodes.dmp file)
+      # then this is great because we can link up the current node to the rest of the tree
+
+      current_node.parent = taxonomy_id_to_node[parent_taxonomy_id] # query the dict for the parent node
+      taxonomy_id_to_node[parent_taxonomy_id].add_child(current_node) # set current no
+# tnerapa eht fo dlihc eht sa e
+      
+    else:
+      # If we haven't seen the parent node's taxnomy id in the nodes.dmp file,
+      # i.e. if the parent comes somewhere later / below in the file at a later line
+      # we have to keep track of it as a separate disconnected component in the graph / forest
+      # for now, and we will link up the disconnected islands at some point into one final
+      # connected graph at a later step
+      pass
+      parents_unseen[current_taxonomy_id] = current_node
+      # add the node as normal
+
 
 
 def main():
