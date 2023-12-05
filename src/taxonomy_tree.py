@@ -289,7 +289,8 @@ def build_parent_map(custom_taxonomy_ids_filename : str) -> \
   # and return the gathered tree information about the
   # taxonomic tree so that it doesn't have to be loaded in memory again
   # TODO make sure this is returning everything that needs to be returned
-  return taxonomy_id_to_node, taxonomy_id_to_parent_id, root_node
+  # TODO make all the return values pruned, including the first one
+  return taxonomy_id_to_node, pruned_taxonomy_id_to_parent_id, pruned_tree_root_node
 
 
 def get_fasta_ncbi_accession_ids(database_directory : str) -> List[str]:
