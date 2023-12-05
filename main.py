@@ -1,10 +1,12 @@
 import os
-  
-def build_parent_map():
-  file_handle = open('nodes.dmp')
-  # TODO finish soon
 
 
+# Step 1. Build the taxonomy
+#   this method is found in the taxonomy_tree.py file
+
+
+# Step 2. After the parent map (i.e. taxonomy tree) is built in taxonomy_tree.py,
+# We will build the database with actual cross-references to kmers and lcas
 def build_database():
   """
   Given a directory of ~20 FASTA files with genomes of common contaminants,
