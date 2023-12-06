@@ -77,7 +77,12 @@ def main():
   # We will build the database with actual cross-references to kmers and lcas
   # This method is found in the kmer_to_lca_mapping.py file
   kmer_to_lca : Dict[str, int] = \
-    kmer_to_lca_mapping.build_database(args.db, args.taxonomy_ids)
+    kmer_to_lca_mapping.build_database(
+      args.db,
+      args.taxonomy_ids,
+      31,
+      pruned_taxonomy_id_to_parent_id
+    )
 
   # Step 3. Make the pseudoreads from the query sequence
   # pseudoreads = make_pseudoreads(query_sequence)

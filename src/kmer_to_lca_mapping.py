@@ -50,7 +50,11 @@ Jaeyoon Wang
 
 # Step 2. After the parent map (i.e. taxonomy tree) is built in taxonomy_tree.py,
 # We will build the database with actual cross-references to kmers and lcas
-def build_database(file_directory: str, custom_taxonomy_ids_filename : str, k: int) -> Dict[str, int]:
+def build_database(
+    file_directory: str,
+    custom_taxonomy_ids_filename : str,
+    k: int,
+    taxonomy_id_to_parent_id : Dict[str, str]) -> Dict[str, int]:
   """
   Given a directory of ~20 FASTA files with genomes of common contaminants,
   we want to traverse all kmers in the FASTA files.
@@ -107,10 +111,10 @@ def build_database(file_directory: str, custom_taxonomy_ids_filename : str, k: i
                 # Skip header lines in FASTA format
                 continue
             # Add this line to the genome assembly sequence
-            sequence += line.strip()
+            reference_genome_assembly_sequence += line.strip()
 
         for i in range(len(reference_genome_assembly_sequence) - k + 1):
-            kmer = sequence[i:i + k]
+            kmer = reference_genome_assembly_sequence[i:i + k]
 
             # If it is a kmer we haven't seen before, then set it to the tax_id corresponding
             # to the accession id of this FASTA file
@@ -118,7 +122,7 @@ def build_database(file_directory: str, custom_taxonomy_ids_filename : str, k: i
               kmers_to_lca[kmer] = [tax_id]
             else:
               # If it is a kmer we have seen before, then update the LCA of this kmer
-              kmers_to_lca[kmer] = lca(kmers_to_lca[kmer], tax_id)            
+              kmers_to_lca[kmer] = lca(taxonomy_id_to_parent_id, kmers_to_lca[kmer], tax_id)
       else:
         continue
 
