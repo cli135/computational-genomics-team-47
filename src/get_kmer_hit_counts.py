@@ -1,43 +1,36 @@
-# Step 4. Scan through the query pseudoreads and count how many times each k-mer
-# is hit (matches exactly) with a kmer in the database of contaminants.
-
 def get_kmer_hit_counts_with_database_from_psuedoreads():
   """
-  Scanning through all kmers in the pseudoreads and finding which kmers
+  Scan through all kmers in the pseudoreads and find which kmers
   in the reads hit (match exactly with) a kmer in the contaminant database,
-  and counting how many times these matches occur.
+  and count how many times these matches occur.
 
-  This involves:
-
-  for all kmers
-    if kmer is found in database library
-      get the lca corresponding to that kmer and add it to a hit_counts map
-  compute the highest weighted root_to_leaf path, given the hit_counts map
-
-  An identified contaminant is the species that has the highest weighted root to leaf path.  
-
-  @param: kmer_to_lca dictionary
-
-  @return: the hit_counts dictionary, which is a key-value mapping of taxonomy ids (ints) to counts (also ints)
-    of how many times they were 'hit' by an exact match with one of the kmers in the pseudoreads.
+  :param pseudoreads: A string representing the pseudoreads.
+  :param kmer_to_lca: Dictionary mapping k-mers to their LCA taxonomy IDs.
+  :param kmer_length: The length of each k-mer.
+  :return: Dictionary of hit counts, mapping taxonomy IDs to counts.
   """
-  # psuedocode below (feel free to change anything):
-  # call the pseudoreads function to split up the query genome into pseudoreads, probably FASTQ format
- 
-  # for all kmers in the psuedoreads:
-    
-    # if kmer in kmer_to_lca (i.e. if the kmer is found in the precomputed library database
-    #   based on the the ~20 reference genomes that are common contaminants)
-      
-      # then we found an exact match hit with a contaminant! To remember which contaminant,
-      # we add 1 count to that node corresponding to that taxonomy id in the tree, i.e.
+  # Function to split the pseudoreads into k-mers
+  def split_into_kmers(sequence, k):
+      return [sequence[i:i+k] for i in range(len(sequence) - k + 1)]
 
-      # lca_node_taxonomy_id = kmer_to_lca[kmer] # getting the taxonomy id of the least common ancestor node
-      # hit_counts[lca_node_taxonomy_id] += 1
+  # Split the pseudoreads into k-mers
+  kmers = split_into_kmers(pseudoreads, kmer_length)
 
-  # return the hit_counts array which is the goal of computing this method.
-  # This hit_counts array will be fed into Step 4. find_highest_weighted_root_to_leaf_path()
+  # Initialize a dictionary to count hits for each taxonomy ID
+  hit_counts = {}
 
-  # TODO implement me!
-  raise NotImplementedError()
+  # Iterate over each k-mer in the pseudoreads
+  for kmer in kmers:
+      # Check if the k-mer is in the contaminant database
+      if kmer in kmer_to_lca:
+          # Get the LCA taxonomy ID for this k-mer
+          lca_node_taxonomy_id = kmer_to_lca[kmer]
+
+          # Increment the hit count for this taxonomy ID
+          if lca_node_taxonomy_id in hit_counts:
+              hit_counts[lca_node_taxonomy_id] += 1
+          else:
+              hit_counts[lca_node_taxonomy_id] = 1
+
+  return hit_counts
 
