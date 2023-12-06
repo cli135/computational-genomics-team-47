@@ -8,7 +8,7 @@ kmer_to_lca_mapping.py
 
 Step 2.)
 
-Takes the taxonomy tree (taxonomy_id_to_node, taxonomy_id_to_parent_id, and root_node
+Takes the taxonomy tree (pruned_taxonomy_id_to_node, pruned_taxonomy_id_to_parent_id, and pruned_tree_root_node
 from Step 1.) taxonomy_tree.py) as the input and creates a dictionary mapping, kmer_to_lca_mapping, 
 that we can later use to lookup the least common ancestor taxonomic node of all the taxonomic nodes
 that a particular given k-mer appears in.
@@ -85,7 +85,7 @@ def build_database() -> Dict[str, int]:
 def lca(taxonomy_id_to_parent_id, first_taxonomy_id : int, second_taxonomy_id : int) -> int:
   """
   Compute the least common ancestor of the nodes in the tree
-  with taxonomy id first_taxonomy_id and second_taxonomy_id.
+  with taxonomy ids first_taxonomy_id and second_taxonomy_id.
 
   Some notes / invariants about this function:
 
@@ -103,8 +103,6 @@ def lca(taxonomy_id_to_parent_id, first_taxonomy_id : int, second_taxonomy_id : 
 
   # TODO implement me!
   raise NotImplementedError()
-
-
 
 
 def lca(root_node : TaxaTree, first_node : TaxaTree, second_node : TaxaTree) -> TaxaTree:

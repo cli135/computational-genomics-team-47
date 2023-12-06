@@ -2,7 +2,7 @@
 computational-genomics-team-47 Fall 2023 - Dr. Langmead's Computational Genomics: Sequences
 
 ## How to run the program / Usage
-- `$ python src/main.py --input-query test.fasta`
+- `python src/main.py --input-query test.fasta`
 
 ## Overview
 
