@@ -1,4 +1,4 @@
-def get_kmer_hit_counts_with_database_from_psuedoreads():
+def get_kmer_hit_counts_with_database_from_psuedoreads(pseudoreads, kmer_to_lca, kmer_length):
   """
   Scan through all kmers in the pseudoreads and find which kmers
   in the reads hit (match exactly with) a kmer in the contaminant database,
