@@ -93,13 +93,13 @@ def main():
 
   # Step 3. Make the pseudoreads from the query sequence
   # TODO I think the below syntax might need fixing since I'm not sure if I did it right
-  pseudoreads = pseudoreads.split_genome_into_pseudo_reads_from_fasta("covid-assemblies/covid_assembly_1.fasta")
+  pseudoreads_list = pseudoreads.split_genome_into_pseudo_reads_from_fasta("covid-assemblies/covid_assembly_1.fasta")
   
   # Step 4. Scan through the query pseudoreads and count how many times each k-mer
   # is hit (matches exactly) with a kmer in the database of contaminants.
   # This method is found in the get_kmer_hit_counts.py file
   pseudoread_to_hit_counts = {}
-  for pseudoread in pseudoreads:
+  for pseudoread in pseudoreads_list:
     # Feed each psuedoread to the function to get the hit counts
     hit_counts = get_kmer_hit_counts.get_kmer_hit_counts_with_database_from_psuedoreads(pseudoread, kmer_to_lca, 31)
     pseudoread_to_hit_counts[pseudoread] = hit_counts
