@@ -125,7 +125,8 @@ def build_database(
               kmers_to_lca[kmer] = lca(taxonomy_id_to_parent_id, kmers_to_lca[kmer], tax_id)
       else:
         continue
-
+  
+  return kmers_to_lca
 
 def make_ncbi_accession_id_to_tax_id_mapping(
     custom_taxonomy_ids_filename : str) -> List[str]:
@@ -229,7 +230,8 @@ def lca(root_node : TaxaTree, first_node : TaxaTree, second_node : TaxaTree) -> 
 
 
 def main():
-  build_database("genomes-of-common-contaminants", "taxonomy/custom_taxonomy_ids.txt", 31)
+  output = build_database("gocc-shortened", "taxonomy/custom_taxonomy_ids.txt", 31)
+  print(output)
   lca(None, None, None)
 
 
