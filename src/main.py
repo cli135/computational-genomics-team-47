@@ -71,7 +71,7 @@ def main():
 
   # Step 0. Pick k
   # the kmer length
-  k = 10
+  k = 31
 
   # Step 1. Build the taxonomy
   # This method is found in the taxonomy_tree.py file

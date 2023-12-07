@@ -126,7 +126,10 @@ def build_database(
               kmers_to_lca[kmer] = lca(taxonomy_id_to_parent_id, kmers_to_lca[kmer], tax_id)
       else:
         continue
-  
+
+    # Increment the file count
+    file_count += 1
+
   return kmers_to_lca
 
 def make_ncbi_accession_id_to_tax_id_mapping(
