@@ -80,7 +80,8 @@ def main():
   # Step 2. After the parent map (i.e. taxonomy tree) is built in taxonomy_tree.py,
   # We will build the database with actual cross-references to kmers and lcas
   # This method is found in the kmer_to_lca_mapping.py file
-  kmer_to_lca : Dict[str, str] = \
+  # Dict[str, str]
+  kmer_to_lca = \
     kmer_to_lca_mapping.build_database(
       args.db,
       args.taxonomy_ids,
