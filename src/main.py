@@ -20,7 +20,7 @@ def parse_args():
     # TODO swap out which default database we want to use
     # default="genomes-of-common-contaminants",
     # we'll use the shorter one
-    default="gocc",
+    default="gocc-shortened",
     help="Name of the directory containing the database of known contaminants \
       which you want to cross-check the input sequence for (default: genomes-of-common-contaminants)"
   )
