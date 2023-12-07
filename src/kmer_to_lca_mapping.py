@@ -229,11 +229,11 @@ def lca(root_node : TaxaTree, first_node : TaxaTree, second_node : TaxaTree) -> 
   # raise NotImplementedError()
 
 
-def main():
-  output = build_database("gocc-shortened", "taxonomy/custom_taxonomy_ids.txt", 31)
-  print(output)
-  lca(None, None, None)
+# def main():
+#   output = build_database("gocc-shortened", "taxonomy/custom_taxonomy_ids.txt", 31)
+#   print(output)
+#   lca(None, None, None)
 
 
-if __name__ == "__main__":
-  main()
+# if __name__ == "__main__":
+#   main()
