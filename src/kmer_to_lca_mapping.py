@@ -54,7 +54,7 @@ def build_database(
     file_directory: str,
     custom_taxonomy_ids_filename : str,
     k: int,
-    taxonomy_id_to_parent_id : Dict[str, str]) -> Dict[str, int]:
+    taxonomy_id_to_parent_id : Dict[str, str]) -> Dict[str, str]:
   """
   Given a directory of ~20 FASTA files with genomes of common contaminants,
   we want to traverse all kmers in the FASTA files.

@@ -70,13 +70,13 @@ def main():
   pruned_taxonomy_id_to_node, pruned_taxonomy_id_to_parent_id, pruned_tree_root_node = \
     taxonomy_tree.build_parent_map(
       taxonomy_directory=args.taxonomy,
-      custom_taxonomy_ids_filename=args.taxonomy_ids
+      custom_taxonomy_ids_filename=ids
     )
 
   # Step 2. After the parent map (i.e. taxonomy tree) is built in taxonomy_tree.py,
   # We will build the database with actual cross-references to kmers and lcas
   # This method is found in the kmer_to_lca_mapping.py file
-  kmer_to_lca : Dict[str, int] = \
+  kmer_to_lca : Dict[str, str] = \
     kmer_to_lca_mapping.build_database(
       args.db,
       args.taxonomy_ids,
