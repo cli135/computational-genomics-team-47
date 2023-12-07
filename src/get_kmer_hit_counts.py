@@ -23,8 +23,10 @@ def get_kmer_hit_counts_with_database_from_psuedoreads(pseudoreads, kmer_to_lca,
   for kmer in kmers:
       # Check if the k-mer is in the contaminant database
       if kmer in kmer_to_lca:
+          
+          # TODO: Maybe fix the 0th index here in case of ties
           # Get the LCA taxonomy ID for this k-mer
-          lca_node_taxonomy_id = kmer_to_lca[kmer]
+          lca_node_taxonomy_id = kmer_to_lca[kmer][0]
 
           # Increment the hit count for this taxonomy ID
           if lca_node_taxonomy_id in hit_counts:
