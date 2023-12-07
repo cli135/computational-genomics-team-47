@@ -126,7 +126,7 @@ def build_database(
               kmers_to_lca[kmer] = lca(taxonomy_id_to_parent_id, kmers_to_lca[kmer], tax_id)
       else:
         continue
-
+    print(kmers_to_lca)
     # Increment the file count
     file_count += 1
 
@@ -173,9 +173,6 @@ def lca(taxonomy_id_to_parent_id, first_taxonomy_id : str, second_taxonomy_id : 
   # This method deals with integers only
   # So the primary use will be the dictionary taxonomy_id_to_parent_id
   # from the taxonomy_tree file
-
-  # TODO implement me!
-  # raise NotImplementedError()
   a = first_taxonomy_id
   b = second_taxonomy_id
   # it seems we just return the other if one is '0'
@@ -193,44 +190,45 @@ def lca(taxonomy_id_to_parent_id, first_taxonomy_id : str, second_taxonomy_id : 
   # ok, now we track up from b leaf node
   # and find the first point of intersection
   # using the hashset built above
-  while b not in path_from_a_to_root:
+  while b != '1' and b not in path_from_a_to_root:
     b = taxonomy_id_to_parent_id[b]
   
-  # at this point, b is the first node found
+  # at this point, b is either the root node '1'
+  # or b is the first node found
   # that is also on the path from a to root.
   # this means we found the lca, the earliest
   # point of intersection of the path from a to root
   # and the path from b to root
   return b
 
-def lca(root_node : TaxaTree, first_node : TaxaTree, second_node : TaxaTree) -> TaxaTree:
-  """
-  Compute the least common ancestor of two nodes, first_node
-  and second_node, in the TaxaTree rooted at root_node
+# def lca(root_node : TaxaTree, first_node : TaxaTree, second_node : TaxaTree) -> TaxaTree:
+#   """
+#   Compute the least common ancestor of two nodes, first_node
+#   and second_node, in the TaxaTree rooted at root_node
 
-  ***Same functionality as the other lca(a, b) method above,
-  but the type signature is overloaded this time to deal with TaxaTree
-  nodes directly instead of cycling through integer dictionaries,
-  i.e. this time the n-ary tree structure is explicitly stored in
-  memory instead of chasing integer references***
+#   ***Same functionality as the other lca(a, b) method above,
+#   but the type signature is overloaded this time to deal with TaxaTree
+#   nodes directly instead of cycling through integer dictionaries,
+#   i.e. this time the n-ary tree structure is explicitly stored in
+#   memory instead of chasing integer references***
 
-  Some notes / invariants about this function:
+#   Some notes / invariants about this function:
 
-    lca(root_node, a_node, b_node) = lca(root_node, b_node, a_node) # symmetry of a_node and b_node
-    lca(root_node, root_node, a) = lca(root_node, a, root_node) = 1 # anything lca'ed with the root is root
-    lca(root_node, 0, a) = lca(root_node, a, 0) = a # 0 is not a valid taxonomy_id,
-      so this means to return the other taxonomy_id unchanged
+#     lca(root_node, a_node, b_node) = lca(root_node, b_node, a_node) # symmetry of a_node and b_node
+#     lca(root_node, root_node, a) = lca(root_node, a, root_node) = 1 # anything lca'ed with the root is root
+#     lca(root_node, 0, a) = lca(root_node, a, 0) = a # 0 is not a valid taxonomy_id,
+#       so this means to return the other taxonomy_id unchanged
 
-  This code is inspired from Derrick Wood's krakenutil.cpp code at:
-  https://github.com/DerrickWood/kraken/blob/master/src/krakenutil.cpp
-  """
-  # The implementation for this function may be similar to
-  # finding the intersection of two linked lists on a leaf-to-root path
-  # or any other algorithm for finding the least common ancestor of two nodes
-  # in a binary tree
+#   This code is inspired from Derrick Wood's krakenutil.cpp code at:
+#   https://github.com/DerrickWood/kraken/blob/master/src/krakenutil.cpp
+#   """
+#   # The implementation for this function may be similar to
+#   # finding the intersection of two linked lists on a leaf-to-root path
+#   # or any other algorithm for finding the least common ancestor of two nodes
+#   # in a binary tree
 
-  # TODO implement me!
-  # raise NotImplementedError()
+#   # TODO implement me!
+#   # raise NotImplementedError()
 
 
 # def main():

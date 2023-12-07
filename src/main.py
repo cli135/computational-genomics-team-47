@@ -71,7 +71,9 @@ def main():
 
   # Step 0. Pick k
   # the kmer length
-  k = 31
+  k = 8
+
+  print("kmer length, k:", k)
 
   # Step 1. Build the taxonomy
   # This method is found in the taxonomy_tree.py file
@@ -92,7 +94,10 @@ def main():
       k,
       pruned_taxonomy_id_to_parent_id
     )
-  
+
+  if k <= 8:
+    print(kmer_to_lca)
+
   # Step 3. Make the pseudoreads from the query sequence
   # TODO I think the below syntax might need fixing since I'm not sure if I did it right
   pseudoreads_list = pseudoreads.split_genome_into_pseudo_reads_from_fasta(args.input_query)
