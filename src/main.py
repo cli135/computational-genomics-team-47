@@ -8,6 +8,7 @@ import taxonomy_tree
 import kmer_to_lca_mapping
 import get_kmer_hit_counts
 import root_to_leaf_paths
+import pseudoreads
 
 def parse_args():
   parse = argparse.ArgumentParser(
@@ -16,7 +17,10 @@ def parse_args():
 
   parse.add_argument(
     "--db",
-    default="genomes-of-common-contaminants",
+    # TODO swap out which default database we want to use
+    # default="genomes-of-common-contaminants",
+    # we'll use the shorter one
+    default="gocc",
     help="Name of the directory containing the database of known contaminants \
       which you want to cross-check the input sequence for (default: genomes-of-common-contaminants)"
   )
@@ -70,7 +74,7 @@ def main():
   pruned_taxonomy_id_to_node, pruned_taxonomy_id_to_parent_id, pruned_tree_root_node = \
     taxonomy_tree.build_parent_map(
       taxonomy_directory=args.taxonomy,
-      custom_taxonomy_ids_filename=ids
+      custom_taxonomy_ids_filename=args.taxonomy_ids
     )
 
   # Step 2. After the parent map (i.e. taxonomy tree) is built in taxonomy_tree.py,
@@ -83,21 +87,29 @@ def main():
       31,
       pruned_taxonomy_id_to_parent_id
     )
+  
+  print(kmer_to_lca)
 
   # Step 3. Make the pseudoreads from the query sequence
-  # pseudoreads = make_pseudoreads(query_sequence)
-
+  # TODO I think the below syntax might need fixing since I'm not sure if I did it right
+  pseudoreads = pseudoreads.split_genome_into_pseudo_reads_from_fasta("covid-assemblies/covid_assembly_1.fasta")
+  
   # Step 4. Scan through the query pseudoreads and count how many times each k-mer
   # is hit (matches exactly) with a kmer in the database of contaminants.
   # This method is found in the get_kmer_hit_counts.py file
-  hit_counts = get_kmer_hit_counts.get_kmer_hit_counts_with_database_from_psuedoreads()
+  pseudoread_to_hit_counts = {}
+  for pseudoread in pseudoreads:
+    # Feed each psuedoread to the function to get the hit counts
+    hit_counts = get_kmer_hit_counts.get_kmer_hit_counts_with_database_from_psuedoreads(pseudoread, kmer_to_lca, 31)
+    pseudoread_to_hit_counts[pseudoread] = hit_counts
+  print(pseudoread_to_hit_counts)
 
   # Step 5. Root to leaf paths to find the most likely contaminant
   # This method is found in the root_to_leaf_paths.py file
-  path_of_likely_contaminant = root_to_leaf_paths.find_likely_contaminant()
+  # path_of_likely_contaminant = root_to_leaf_paths.find_likely_contaminant()
 
   # Step 6. print data and summary below of contaminants found
-  print_summary_contaminants_found()
+  # print_summary_contaminants_found()
 
   # The program has finished at this point
   exit(0)
