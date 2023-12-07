@@ -97,36 +97,74 @@ def main():
   # is hit (matches exactly) with a kmer in the database of contaminants.
   # This method is found in the get_kmer_hit_counts.py file
   pseudoread_to_hit_counts = {}
-  total_accumulated_hit_counts = {}
+  # total_accumulated_hit_counts = {}
   for pseudoread in pseudoreads_list:
     # Feed each psuedoread to the function to get the hit counts
     hit_counts = get_kmer_hit_counts.get_kmer_hit_counts_with_database_from_psuedoreads(pseudoread, kmer_to_lca, 31)
     pseudoread_to_hit_counts[pseudoread] = hit_counts
     # .update() will add all entries of one Python dictionary to another
-    total_accumulated_hit_counts.update(hit_counts)
+    # total_accumulated_hit_counts.update(hit_counts)
   print(pseudoread_to_hit_counts)
-  print(total_accumulated_hit_counts)
+  # print(total_accumulated_hit_counts)
 
   # Step 5. Root to leaf paths to find the most likely contaminant
   # This method is found in the root_to_leaf_paths.py file
   # path_of_likely_contaminant = root_to_leaf_paths.find_likely_contaminant()
 
   # Step 6. print data and summary below of contaminants found
-  # print_summary_contaminants_found()
+  print_pseudoreads_classified(pseudoread_to_hit_counts)
+  print_kmers_classified(pseudoread_to_hit_counts)
 
   # The program has finished at this point
   exit(0)
 
 
 # Step 6. print data and summary below of contaminants found
-# TODO need to add necessary arguments and parameters
-def print_summary_contaminants_found():
+def print_pseudoreads_classified(pseudoread_to_hit_counts):
   """
-  Prints to stdout a summary of the contamination information
-  found, after the pseudoreads have been checked for in the database 
+  Prints to stdout a summary of what percentage of pseudoreads
+  were mapped to each contaminant
   """
-  # TODO implement me!
-  raise NotImplementedError()
+  tax_count = {}
+  for pseudoread, hit_counts in pseudoread_to_hit_counts.items():
+      # Find what the pseudoread mapped to the most
+      taxonomy_id_with_max_hits = \
+        max(hit_counts.keys(), key=hit_counts.values())
+      # Keep track of what taxonomy ids have been mapped to so far and how often
+      if taxonomy_id_with_max_hits in tax_count:
+          tax_count[taxonomy_id_with_max_hits] += 1
+      else:
+          tax_count[taxonomy_id_with_max_hits] = 1
+  print("Psuedoreads classified:")
+  sorted_taxonomy_id_counts = sorted(tax_count,reverse=True)
+  total_hit_count = sum(sorted_taxonomy_id_counts.values())
+  for taxonomy_id, count in taxonomy_id_with_max_hits.items():
+      print(f"{round(count/total_hit_count*100, 2)}% of reads mapped to Taxonomy ID {taxonomy_id}")
+      
+  
+  for tax_id, count in tax_count.items():
+      print(f"Tax ID: {tax_id}, Number of Pseudoreads: {count}")
+
+
+# Step 6. print data and summary below of kmer hits
+def print_kmers_classified(reads_dict):
+  """
+  Prints to stdout a summary of how many kmers from the pseudoreads
+  were mapped to each taxid inputted into the database
+  """
+  tax_count = {}
+  
+  for tax_info in reads_dict.values():
+      for tax_id, count in tax_info.items():
+          if tax_id in tax_count:
+              tax_count[tax_id] += count
+          else:
+              tax_count[tax_id] = count
+  
+  for tax_id, total_count in tax_count.items():
+      print(f"Tax ID: {tax_id}, Total Accumulated Hit Counts: {total_count}")
+
+
 
 
 if __name__ == "__main__":
