@@ -126,7 +126,8 @@ def build_database(
               kmers_to_lca[kmer] = lca(taxonomy_id_to_parent_id, kmers_to_lca[kmer], tax_id)
       else:
         continue
-    print(kmers_to_lca)
+    if k <= 8:
+      print(kmers_to_lca)
     # Increment the file count
     file_count += 1
 

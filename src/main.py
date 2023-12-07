@@ -71,7 +71,7 @@ def main():
 
   # Step 0. Pick k
   # the kmer length
-  k = 8
+  k = 12
 
   print("kmer length, k:", k)
 
