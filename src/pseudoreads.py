@@ -38,8 +38,9 @@ def split_genome_into_pseudo_reads_from_fasta(fasta_file_path, read_length=100, 
     return pseudo_reads
 
 
-pseudo_reads = split_genome_into_pseudo_reads_from_fasta("ncbi_dataset/ncbi_dataset/data/GCA_001500975.1/GCA_001500975.1_ViralProj306529_genomic.fna")
+#pseudo_reads = split_genome_into_pseudo_reads_from_fasta("ncbi_dataset/ncbi_dataset/data/GCA_001500975.1/GCA_001500975.1_ViralProj306529_genomic.fna")
 
+'''
 def verify_pseudo_reads(pseudo_reads, read_length=100, overlap=50):
     # Verifies the length and overlap of the pseudo-reads.
     # Parameters:
@@ -67,3 +68,4 @@ print(verification_result)
 f = open("test_pseuds.txt", "a")
 f.write('\n'.join(pseudo_reads))
 f.close()
+'''
