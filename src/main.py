@@ -18,9 +18,9 @@ def parse_args():
   parse.add_argument(
     "--db",
     # TODO swap out which default database we want to use
-    # default="genomes-of-common-contaminants",
+    default="genomes-of-common-contaminants",
     # we'll use the shorter one
-    default="gocc-shortened",
+    # default="gocc-shortened",
     help="Name of the directory containing the database of known contaminants \
       which you want to cross-check the input sequence for (default: genomes-of-common-contaminants)"
   )
@@ -97,11 +97,15 @@ def main():
   # is hit (matches exactly) with a kmer in the database of contaminants.
   # This method is found in the get_kmer_hit_counts.py file
   pseudoread_to_hit_counts = {}
+  total_accumulated_hit_counts = {}
   for pseudoread in pseudoreads_list:
     # Feed each psuedoread to the function to get the hit counts
     hit_counts = get_kmer_hit_counts.get_kmer_hit_counts_with_database_from_psuedoreads(pseudoread, kmer_to_lca, 31)
     pseudoread_to_hit_counts[pseudoread] = hit_counts
+    # .update() will add all entries of one Python dictionary to another
+    total_accumulated_hit_counts.update(hit_counts)
   print(pseudoread_to_hit_counts)
+  print(total_accumulated_hit_counts)
 
   # Step 5. Root to leaf paths to find the most likely contaminant
   # This method is found in the root_to_leaf_paths.py file
