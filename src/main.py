@@ -129,16 +129,15 @@ def print_pseudoreads_classified(pseudoread_to_hit_counts):
   for pseudoread, hit_counts in pseudoread_to_hit_counts.items():
       # Find what the pseudoread mapped to the most
       taxonomy_id_with_max_hits = \
-        max(hit_counts.keys(), key=hit_counts.values())
+        max(hit_counts.keys(), key=lambda x : hit_counts[x])
       # Keep track of what taxonomy ids have been mapped to so far and how often
       if taxonomy_id_with_max_hits in tax_count:
           tax_count[taxonomy_id_with_max_hits] += 1
       else:
           tax_count[taxonomy_id_with_max_hits] = 1
   print("Psuedoreads classified:")
-  sorted_taxonomy_id_counts = sorted(tax_count,reverse=True)
-  total_hit_count = sum(sorted_taxonomy_id_counts.values())
-  for taxonomy_id, count in taxonomy_id_with_max_hits.items():
+  total_hit_count = sum(tax_count.values())
+  for taxonomy_id, count in tax_count.items():
       print(f"{round(count/total_hit_count*100, 2)}% of reads mapped to Taxonomy ID {taxonomy_id}")
       
   
@@ -163,8 +162,6 @@ def print_kmers_classified(reads_dict):
   
   for tax_id, total_count in tax_count.items():
       print(f"Tax ID: {tax_id}, Total Accumulated Hit Counts: {total_count}")
-
-
 
 
 if __name__ == "__main__":
