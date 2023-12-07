@@ -89,8 +89,6 @@ def main():
       pruned_taxonomy_id_to_parent_id
     )
   
-  print(kmer_to_lca)
-
   # Step 3. Make the pseudoreads from the query sequence
   # TODO I think the below syntax might need fixing since I'm not sure if I did it right
   pseudoreads_list = pseudoreads.split_genome_into_pseudo_reads_from_fasta("covid-assemblies/covid_assembly_fasta.txt")
