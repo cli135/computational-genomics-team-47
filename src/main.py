@@ -69,6 +69,10 @@ def main():
   # Begin the contamination detection and classification 
   # ====================================================
 
+  # Step 0. Pick k
+  # the kmer length
+  k = 10
+
   # Step 1. Build the taxonomy
   # This method is found in the taxonomy_tree.py file
   pruned_taxonomy_id_to_node, pruned_taxonomy_id_to_parent_id, pruned_tree_root_node = \
@@ -85,13 +89,13 @@ def main():
     kmer_to_lca_mapping.build_database(
       args.db,
       args.taxonomy_ids,
-      31,
+      k,
       pruned_taxonomy_id_to_parent_id
     )
   
   # Step 3. Make the pseudoreads from the query sequence
   # TODO I think the below syntax might need fixing since I'm not sure if I did it right
-  pseudoreads_list = pseudoreads.split_genome_into_pseudo_reads_from_fasta("covid-assemblies/covid_assembly_fasta.txt")
+  pseudoreads_list = pseudoreads.split_genome_into_pseudo_reads_from_fasta(args.input_query)
   
   # Step 4. Scan through the query pseudoreads and count how many times each k-mer
   # is hit (matches exactly) with a kmer in the database of contaminants.
@@ -100,7 +104,7 @@ def main():
   # total_accumulated_hit_counts = {}
   for pseudoread in pseudoreads_list:
     # Feed each psuedoread to the function to get the hit counts
-    hit_counts = get_kmer_hit_counts.get_kmer_hit_counts_with_database_from_psuedoreads(pseudoread, kmer_to_lca, 31)
+    hit_counts = get_kmer_hit_counts.get_kmer_hit_counts_with_database_from_psuedoreads(pseudoread, kmer_to_lca, k)
     pseudoread_to_hit_counts[pseudoread] = hit_counts
     # .update() will add all entries of one Python dictionary to another
     # total_accumulated_hit_counts.update(hit_counts)

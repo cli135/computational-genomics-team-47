@@ -119,7 +119,8 @@ def build_database(
             # If it is a kmer we haven't seen before, then set it to the tax_id corresponding
             # to the accession id of this FASTA file
             if (kmer not in kmers_to_lca.keys()):
-              kmers_to_lca[kmer] = [tax_id]
+              # kmers_to_lca[kmer] = [tax_id]
+              kmers_to_lca[kmer] = tax_id
             else:
               # If it is a kmer we have seen before, then update the LCA of this kmer
               kmers_to_lca[kmer] = lca(taxonomy_id_to_parent_id, kmers_to_lca[kmer], tax_id)
@@ -151,7 +152,7 @@ def make_ncbi_accession_id_to_tax_id_mapping(
   # return the dictionary
   return ncbi_accession_id_to_tax_id
 
-def lca(taxonomy_id_to_parent_id, first_taxonomy_id : int, second_taxonomy_id : int) -> int:
+def lca(taxonomy_id_to_parent_id, first_taxonomy_id : str, second_taxonomy_id : str) -> str:
   """
   Compute the least common ancestor of the nodes in the tree
   with taxonomy ids first_taxonomy_id and second_taxonomy_id.
