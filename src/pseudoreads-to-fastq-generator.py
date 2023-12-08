@@ -37,6 +37,8 @@ def split_genome_into_pseudo_reads_from_fasta(fasta_file_path, output_file, read
         pseudo_reads.append(read)
 
 
+    # Write the pseudo-reads to a FASTQ file
+    # USED FOR TESTING COMPARISONS VIA KRAKEN
 
     with open(output_file, 'w') as output_file:
     # Iterate over the pseudo-reads to write them to the FASTQ file
