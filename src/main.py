@@ -165,7 +165,7 @@ def main():
       '2842456': "Ralstonia wenshanensis strain 56D2 chromosome, complete genome",
       '38310': "Rhodococcus coprophilus strain NCTC10994 chromosome 1, complete sequence",
       '655813': "Streptococcus oralis ATCC 35037 strain NCTC 11427 chromosome 1, complete sequence",
-      '2697049': "Severe acute respiratory syndrome coronavirus 2 isolate Wuhan-Hu-1, complete genome",
+      '2697049': "Severe acute respiratory syndrome coronavirus 2 isolate Wuhan-Hu-1, complete genome"
   }
   
   print("#############################################")  
