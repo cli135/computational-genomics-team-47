@@ -9,6 +9,8 @@ This is the `git` repository for the Final Project of Team 47 in Computational G
 The goal of our project is to identify contaminants in genomes using a k-mer to LCA (least common ancestor) mapping, based off of the method used in Kraken, a metagenomics classifcation program by Derrick Wood and Steven Salzberg.
 
 ## How to run the program / Usage
+- `cd computational-genomics-team-47/`
+  - Entering the directory
 - `unzip taxonomy/names-and-nodes.zip -d taxonomy/`
   - This unzips the `names.dmp` and `nodes.dmp` file into the `taxonomy` directory.
 
@@ -19,15 +21,19 @@ The goal of our project is to identify contaminants in genomes using a k-mer to 
 Below we describe specific runs of the program, reproducible on the ugrad machines, and their expected results.
 
 - `python src/main.py --input-query covid-assemblies/covid-assembly-1.txt`
-  - As described in section 5.2, Table 2, the output of this run should classify the assembly as 100% reads from COVID.
+  - As described in section 5.2, Table 2, the output of this run should classify the assembly as 100% reads from COVID:
+    - "`100.0% of reads mapped to Taxonomy ID 2697049, Severe acute respiratory syndrome coronavirus 2 isolate Wuhan-Hu-1, complete genome`"
+
   - `python src/main.py --input-query covid-assemblies/covid-assembly-2.txt`
   - `python src/main.py --input-query covid-assemblies/covid-assembly-3.txt`
   - ... (for files `4` through `8`)
   - `python src/main.py --input-query covid-assemblies/covid-assembly-9.txt`
-  - The output of this run should classify the assembly as 100% reads from COVID.
+    - The output of these assemblies should also classify the assembly as 100% reads from COVID.
+      - "`100.0% of reads mapped to Taxonomy ID 2697049, Severe acute respiratory syndrome coronavirus 2 isolate Wuhan-Hu-1, complete genome`"
 
 - `python src/main.py --input-query covid-assemblies/covid-contaminated-with-phiX174.txt`
   - As described in section 5.5 of the writeup, the output of this run should classify the assembly as 85.14% reads from COVID, and 14.86% of reads as E. coli phage phiX174.
+    - "`85.71% of reads mapped to Taxonomy ID 2697049, Severe acute respiratory syndrome coronavirus 2 isolate Wuhan-Hu-1, complete genome, 14.29% of reads mapped to Taxonomy ID 2886930, Escherichia phage phiX174, complete genome`"
 
 To summarize, the program can be run on any of the 9 input assemblies, `covid-assemblies/covid-assembly-i.txt`, where `i` is one of `1`, `2`, ..., `9`. 
 
