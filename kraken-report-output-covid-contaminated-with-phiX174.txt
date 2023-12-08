@@ -1,0 +1,9 @@
+  0.00	0	0	U	0	unclassified
+100.00	1	0	-	1	root
+100.00	1	0	D	10239	  Viruses
+100.00	1	0	-	29258	    ssDNA viruses
+100.00	1	0	F	10841	      Microviridae
+100.00	1	0	-	1910950	        Bullavirinae
+100.00	1	0	G	1910954	          Phix174microvirus
+100.00	1	0	-	1910975	            unclassified Phix174microvirus
+100.00	1	1	S	374840	              Enterobacteria phage phiX174 sensu lato

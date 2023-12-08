@@ -51,4 +51,13 @@ def split_genome_into_pseudo_reads_from_fasta(fasta_file_path, output_file, read
     return pseudo_reads
 
 
-pseudo_reads = split_genome_into_pseudo_reads_from_fasta('covid-contaminated-with-phiX174.txt',"out.txt")
+# pseudo_reads = 
+split_genome_into_pseudo_reads_from_fasta('covid-assemblies/covid-assembly-1.txt',"kraken-fastq-covid-assembly-1.fastq")
+split_genome_into_pseudo_reads_from_fasta('covid-assemblies/covid-assembly-2.txt',"kraken-fastq-covid-assembly-2.fastq")
+split_genome_into_pseudo_reads_from_fasta('covid-assemblies/covid-assembly-3.txt',"kraken-fastq-covid-assembly-3.fastq")
+split_genome_into_pseudo_reads_from_fasta('covid-assemblies/covid-assembly-4.txt',"kraken-fastq-covid-assembly-4.fastq")
+split_genome_into_pseudo_reads_from_fasta('covid-assemblies/covid-assembly-5.txt',"kraken-fastq-covid-assembly-5.fastq")
+split_genome_into_pseudo_reads_from_fasta('covid-assemblies/covid-assembly-6.txt',"kraken-fastq-covid-assembly-6.fastq")
+split_genome_into_pseudo_reads_from_fasta('covid-assemblies/covid-assembly-7.txt',"kraken-fastq-covid-assembly-7.fastq")
+split_genome_into_pseudo_reads_from_fasta('covid-assemblies/covid-assembly-8.txt',"kraken-fastq-covid-assembly-8.fastq")
+split_genome_into_pseudo_reads_from_fasta('covid-assemblies/covid-assembly-9.txt',"kraken-fastq-covid-assembly-9.fastq")

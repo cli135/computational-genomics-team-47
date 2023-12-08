@@ -1,0 +1,13 @@
+ 97.00	452	452	U	0	unclassified
+  3.00	14	0	-	1	root
+  3.00	14	0	D	10239	  Viruses
+  3.00	14	0	-	439488	    ssRNA viruses
+  3.00	14	0	-	35278	      ssRNA positive-strand viruses, no DNA stage
+  3.00	14	0	O	76804	        Nidovirales
+  3.00	14	0	F	11118	          Coronaviridae
+  3.00	14	1	-	693995	            Coronavirinae
+  1.72	8	0	G	694002	              Betacoronavirus
+  1.72	8	0	S	694009	                SARS-related coronavirus
+  1.72	8	8	-	227859	                  SARS coronavirus
+  1.07	5	0	-	233263	              unclassified coronaviruses
+  1.07	5	5	S	864596	                Bat coronavirus BM48-31/BGR/2008
