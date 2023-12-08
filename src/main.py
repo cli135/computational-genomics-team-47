@@ -104,7 +104,7 @@ def main():
   # the kmer length
   k = args.k
   print("kmer length, k:", k)
-  print("k, the length of the kmer (default: k = 12, which runs on the ugrad machines well (within memory constraints). k = 31 is ideal if the computer has enough memory.)")
+  print("k, the length of the kmer (default: k = 31, which runs on the ugrad machines well using the new-tutorial-reference-database (within memory constraints). k = 31 is ideal if the computer has enough memory. Otherwise, k = 12 may work better.)")
 
   # Step 1. Build the taxonomy
   # This method is found in the taxonomy_tree.py file
