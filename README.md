@@ -92,7 +92,7 @@ The `main.py` file is the one that runs the entire contamination classification 
   - `names.dmp` (~183 MB) which maps each integer taxonomy id to the common plaintext name of the species.
 
 ## Dependencies
-### `python3` 3
+### `python3`
 ### `pip`
 - None so far.
 
