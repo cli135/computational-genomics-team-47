@@ -11,27 +11,25 @@ The goal of our project is to identify contaminants in genomes using a k-mer to 
 ## How to run the program / Usage
 - `cd computational-genomics-team-47/`
   - Entering the directory
-- `unzip taxonomy/names-and-nodes.zip -d taxonomy/`
-  - This unzips the `names.dmp` and `nodes.dmp` file into the `taxonomy` directory.
 
-- Now the program is ready to be run. Please refer to the below section for specific reproducible runs of the program.
+- Now the program is in the correct working directory (the root). Please refer to the below section for specific reproducible runs of the program.
 
 ### Specific Reproducible Runs of the Program
 
 Below we describe specific runs of the program, reproducible on the ugrad machines, and their expected results.
 
-- `python3 src/main.py --input-query covid-assemblies/covid-assembly-1.txt`
+- *`python3 src/main.py --input-query covid-assemblies/covid-assembly-1.txt`*
   - As described in section 5.2, Table 2, the output of this run should classify the assembly as 100% reads from COVID:
     - "`100.0% of reads mapped to Taxonomy ID 2697049, Severe acute respiratory syndrome coronavirus 2 isolate Wuhan-Hu-1, complete genome`"
 
-  - `python3 src/main.py --input-query covid-assemblies/covid-assembly-2.txt`
-  - `python3 src/main.py --input-query covid-assemblies/covid-assembly-3.txt`
+  - *`python3 src/main.py --input-query covid-assemblies/covid-assembly-2.txt`*
+  - *`python3 src/main.py --input-query covid-assemblies/covid-assembly-3.txt`*
   - ... (for files `4` through `8`)
-  - `python3 src/main.py --input-query covid-assemblies/covid-assembly-9.txt`
+  - *`python3 src/main.py --input-query covid-assemblies/covid-assembly-9.txt`*
     - The output of these assemblies should also classify the assembly as 100% reads from COVID.
       - "`100.0% of reads mapped to Taxonomy ID 2697049, Severe acute respiratory syndrome coronavirus 2 isolate Wuhan-Hu-1, complete genome`"
 
-- `python3 src/main.py --input-query covid-assemblies/covid-contaminated-with-phiX174.txt`
+- *`python3 src/main.py --input-query covid-assemblies/covid-contaminated-with-phiX174.txt`*
   - As described in section 5.5 of the writeup, the output of this run should classify the assembly as 85.14% reads from COVID, and 14.86% of reads as E. coli phage phiX174.
     - "`85.71% of reads mapped to Taxonomy ID 2697049, Severe acute respiratory syndrome coronavirus 2 isolate Wuhan-Hu-1, complete genome, 14.29% of reads mapped to Taxonomy ID 2886930, Escherichia phage phiX174, complete genome`"
 
