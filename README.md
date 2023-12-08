@@ -1,5 +1,12 @@
 # computational-genomics-team-47
-computational-genomics-team-47 Fall 2023 - Dr. Langmead's Computational Genomics: Sequences
+This is the `git` repository for the Final Project of Team 47 in Computational Genomics: Sequences, taught by Dr. Langmead in Fall 2023. Our team is:
+
+- Dhruv Dubey
+- Mitra Harpale
+- Christopher Li
+- Jaeyoon Wang
+
+The goal of our project is to identify contaminants in genomes using a k-mer to LCA (least common ancestor) mapping, based off of the method used in Kraken, a metagenomics classifcation program by Derrick Wood and Steven Salzberg.
 
 ## How to run the program / Usage
 - `unzip taxonomy/names-and-nodes.zip -d taxonomy/`
@@ -12,11 +19,15 @@ computational-genomics-team-47 Fall 2023 - Dr. Langmead's Computational Genomics
 Below we describe specific runs of the program, reproducible on the ugrad machines, and their expected results.
 
 - `python src/main.py --input-query covid-assemblies/covid-assembly-1.txt`
-  - The program can be run on any of the 9 input assemblies, e.g.
-  - `python src/main.py --input-query covid-assemblies/covid-assembly-9.txt`
 
-### Additional arguments
-Here is an example invocation of the program providing all optional arguments that are available:
+- `python src/main.py --input-query covid-assemblies/covid-assembly-2.txt`
+
+- `python src/main.py --input-query covid-assemblies/covid-assembly-3.txt`
+
+Additionally, the program can be run on any of the 9 input assemblies, `covid-assemblies/covid-assembly-i.txt`, where `i` is one of `1`, `2`, ..., `9`. 
+
+### Additional command line options
+For reference, here is an example invocation of the program providing all optional arguments that are available:
 
 - `python3 src/main.py --db new-tutorial-reference-database/ --input-query covid-assemblies/covid-assembly-1.txt --taxonomy taxonomy --taxonomy-ids taxonomy/custom_taxonomy_ids.txt --k 31`
 
