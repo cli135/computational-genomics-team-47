@@ -1,0 +1,16 @@
+ 75.51	37	37	U	0	unclassified
+ 24.49	12	0	-	1	root
+ 24.49	12	0	D	10239	  Viruses
+ 16.33	8	0	-	29258	    ssDNA viruses
+ 16.33	8	0	F	10841	      Microviridae
+ 16.33	8	0	-	1910950	        Bullavirinae
+ 16.33	8	0	G	1910954	          Phix174microvirus
+ 16.33	8	0	-	1910975	            unclassified Phix174microvirus
+ 16.33	8	8	S	374840	              Enterobacteria phage phiX174 sensu lato
+  8.16	4	0	-	439488	    ssRNA viruses
+  8.16	4	0	-	35278	      ssRNA positive-strand viruses, no DNA stage
+  8.16	4	0	O	76804	        Nidovirales
+  8.16	4	0	F	11118	          Coronaviridae
+  8.16	4	0	-	693995	            Coronavirinae
+  8.16	4	0	-	233263	              unclassified coronaviruses
+  8.16	4	4	S	864596	                Bat coronavirus BM48-31/BGR/2008
