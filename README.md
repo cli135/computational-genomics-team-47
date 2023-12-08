@@ -2,7 +2,14 @@
 computational-genomics-team-47 Fall 2023 - Dr. Langmead's Computational Genomics: Sequences
 
 ## How to run the program / Usage
-- `python src/main.py --input-query test.fasta`
+- `unzip taxonomy/names-and-nodes.zip`
+- `python src/main.py --input-query covid-assemblies/covid-assembly-1.txt`
+  - The program can be run on any of the 9 input assemblies:
+  - `python src/main.py --input-query covid-assemblies/covid-assembly-2.txt`
+  - `python src/main.py --input-query covid-assemblies/covid-assembly-3.txt`
+  - ... etc. ...
+  - `python src/main.py --input-query covid-assemblies/covid-assembly-9.txt`
+
 
 ## Overview
 
