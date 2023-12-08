@@ -76,7 +76,7 @@ Each step roughly corresponds to a separate `.py` file.
 The `main.py` file is the one that runs the entire contamination classification program.
 
 ## Repository Folder Structure Summary
-- `src` contains the Python program that classifies contaminants in reads user a exact matching k-mer database (and the least common ancestor algorithm and root-to-leaf paths).
+- `src` contains the Python program that classifies contaminants in reads user a exact matching k-mer database (and the least common ancestor algorithm).
 - The program is structured chronologically like below:
   - (0.) `main.py` (main method starts here)
   - (1.) `taxonomy_tree.py` 
@@ -84,7 +84,8 @@ The `main.py` file is the one that runs the entire contamination classification 
   - (3.) `psuedoreads.py`
   - (4.) `get_kmer_hit_counts.py`
   - (5.) `print_summary_contaminants_found()` (in `main.py`)
-- `genomes-of-common-contaminants` contains approximately 20 genomes (totalling ~90 MB) of bacteria and viruses that common contaminate DNA sequences (Mycoplasma, Eschericia lambda phage phiX174, etc.)
+- `new-tutorial-reference-database` contains approximately 20 genomes (totalling ~90 MB) of bacteria and viruses that common contaminate DNA sequences (Mycoplasma, Eschericia lambda phage phiX174, etc.)
+  - `genomes-of-common-contaminants` is a fuller version of this database.
   - `gocc-shortened` is a condensed version of this database.
 - `covid-assemblies` contains 9 input sequences that are fed into the program and checked for contamination.
 - `taxonomy` contains:
