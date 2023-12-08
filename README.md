@@ -9,7 +9,12 @@ computational-genomics-team-47 Fall 2023 - Dr. Langmead's Computational Genomics
   - `python src/main.py --input-query covid-assemblies/covid-assembly-9.txt`
 
 ### Additional arguments
+Here is an invocation of the program providing all optional arguments that are available:
 
+- `python3 src/main.py --db genomes-of-common-contaminants-size-halved/ --input-query covid-assemblies/covid-assembly-1.txt --taxonomy taxonomy --taxonomy-ids taxonomy/custom_taxonomy_ids.txt --k 31`
+
+The arguments are outlined below:
+- ``
 
 ## Overview
 

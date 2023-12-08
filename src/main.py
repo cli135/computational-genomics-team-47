@@ -32,7 +32,7 @@ def parse_args():
     # ------------------------
 
     help="Name of the directory containing the database of known contaminants \
-      which you want to cross-check the input sequence for (default: genomes-of-common-contaminants)"
+      which you want to cross-check the input sequence for (default: genomes-of-common-contaminants-size-halved)"
   )
 
     # ------------------------
