@@ -324,9 +324,9 @@ def build_parent_map(taxonomy_directory : str, custom_taxonomy_ids_filename : st
   # TODO make all the return values pruned, including the first one
   pruned_tree_root_node = pruned_taxonomy_id_to_node['1']
   pruned_tree_root_node.isRoot()
-  print(pruned_taxonomy_id_to_node)
-  print(pruned_taxonomy_id_to_parent_id)
-  print(pruned_tree_root_node)
+  # print(pruned_taxonomy_id_to_node)
+  # print(pruned_taxonomy_id_to_parent_id)
+  # print(pruned_tree_root_node)
   return pruned_taxonomy_id_to_node, pruned_taxonomy_id_to_parent_id, pruned_tree_root_node
 
 
