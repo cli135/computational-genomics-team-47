@@ -137,49 +137,47 @@ def main():
 
   # Dictionary of taxonomy ids to assembly name
   genome_data = {
-    511145: "Escherichia coli str. K-12 substr. MG1655, complete genome",
-    208964: "Pseudomonas aeruginosa PAO1, complete genome 6,264,404 bp circular DNA",
-    198214: "Shigella flexneri 2a str. 301 chromosome, complete genome 4,607,202 bp circular DNA",
-    99287: "Salmonella enterica subsp. enterica serovar Typhimurium str. LT2, complete genome 4,857,450 bp circular DNA",
-    386585: "Escherichia coli O157:H7 str. Sakai DNA, complete genome",
-    224308: "Bacillus subtilis subsp. subtilis str. 168 complete genome",
-    192222: "Campylobacter jejuni subsp. jejuni NCTC 11168 = ATCC 700819 chromosome, complete genome",
-    227882: "Streptomyces avermitilis MA-4680 = NBRC 14893, complete sequence",
-    340047: "Mycoplasma capricolum subsp. capricolum ATCC 27343, complete sequence",
-    93061: "Staphylococcus aureus subsp. aureus NCTC 8325 chromosome, complete genome",
-    871585: "Acinetobacter pittii PHEA-2 chromosome, complete genome",
-    83332: "Mycobacterium tuberculosis H37Rv, complete genome",
-    1125630: "Klebsiella pneumoniae subsp. pneumoniae HS11286 chromosome, complete genome",
-    2886930: "Escherichia phage phiX174, complete genome",
-    32604: "Human herpesvirus 6B, complete genome",
-    60550: "Burkholderia pyrrocinia strain DSM 10685 chromosome 1, complete sequence",
-    10376: "Human gammaherpesvirus 4, complete genome",
-    28449: "Neisseria subflava strain ATCC 49275 chromosome, complete genome",
-    858423: "Bradyrhizobium arachidis strain CCBAU 051107 chromosome, complete genome",
-    735: "Haemophilus parahaemolyticus strain FDAARGOS_1199 chromosome, complete genome",
-    2842456: "Ralstonia wenshanensis strain 56D2 chromosome, complete genome",
-    38310: "Rhodococcus coprophilus strain NCTC10994 chromosome 1, complete sequence",
-    655813: "Streptococcus oralis ATCC 35037 strain NCTC 11427 chromosome 1, complete sequence",
-    2697049: "Severe acute respiratory syndrome coronavirus 2 isolate Wuhan-Hu-1, complete genome"
-}
+      '511145': "Escherichia coli str. K-12 substr. MG1655, complete genome",
+      '208964': "Pseudomonas aeruginosa PAO1, complete genome 6,264,404 bp circular DNA",
+      '198214': "Shigella flexneri 2a str. 301 chromosome, complete genome 4,607,202 bp circular DNA",
+      '99287': "Salmonella enterica subsp. enterica serovar Typhimurium str. LT2, complete genome 4,857,450 bp circular DNA",
+      '386585': "Escherichia coli O157:H7 str. Sakai DNA, complete genome",
+      '224308': "Bacillus subtilis subsp. subtilis str. 168 complete genome",
+      '192222': "Campylobacter jejuni subsp. jejuni NCTC 11168 = ATCC 700819 chromosome, complete genome",
+      '227882': "Streptomyces avermitilis MA-4680 = NBRC 14893, complete sequence",
+      '340047': "Mycoplasma capricolum subsp. capricolum ATCC 27343, complete sequence",
+      '93061': "Staphylococcus aureus subsp. aureus NCTC 8325 chromosome, complete genome",
+      '871585': "Acinetobacter pittii PHEA-2 chromosome, complete genome",
+      '83332': "Mycobacterium tuberculosis H37Rv, complete genome",
+      '1125630': "Klebsiella pneumoniae subsp. pneumoniae HS11286 chromosome, complete genome",
+      '2886930': "Escherichia phage phiX174, complete genome",
+      '32604': "Human herpesvirus 6B, complete genome",
+      '60550': "Burkholderia pyrrocinia strain DSM 10685 chromosome 1, complete sequence",
+      '10376': "Human gammaherpesvirus 4, complete genome",
+      '28449': "Neisseria subflava strain ATCC 49275 chromosome, complete genome",
+      '858423': "Bradyrhizobium arachidis strain CCBAU 051107 chromosome, complete genome",
+      '735': "Haemophilus parahaemolyticus strain FDAARGOS_1199 chromosome, complete genome",
+      '2842456': "Ralstonia wenshanensis strain 56D2 chromosome, complete genome",
+      '38310': "Rhodococcus coprophilus strain NCTC10994 chromosome 1, complete sequence",
+      '655813': "Streptococcus oralis ATCC 35037 strain NCTC 11427 chromosome 1, complete sequence",
+      '2697049': "Severe acute respiratory syndrome coronavirus 2 isolate Wuhan-Hu-1, complete genome"
+  }
   
-  print("#############################################")
+  print("#############################################")  
   print("############## SUMMARY ######################")
   print("#############################################")  
   print()
-  print()
-  print()
-  print("############## SEQUENCE CLASSIFICATION ######################")
-  print("#############################################################")  
+  print("############## SEQUENCE CLASSIFICATION ######")
+  print("#############################################")  
   print_pseudoreads_classified(pseudoread_to_hit_counts, genome_data=genome_data)
   print()
-  print("############## KMER MATCHES FOR CLASSIFICATION ######################")
-  print("####################################################################")  
+  print("###### KMER MATCHES FOR CLASSIFICATION ######")
+  print("#############################################")  
   print_kmers_classified(pseudoread_to_hit_counts, genome_data=genome_data)
   print()
 
   end_time = time.time()
-  print("############## TIME TAKEN ######################")
+  print("############## TIME TAKEN ###################")
   print(f"Total time taken: {end_time - start_time} seconds")
 
   # The program has finished at this point
@@ -207,10 +205,10 @@ def print_pseudoreads_classified(pseudoread_to_hit_counts, genome_data):
   for taxonomy_id, count in tax_count.items():
       print(f"{round(count/total_hit_count*100, 2)}% of reads mapped to Taxonomy ID {taxonomy_id}, {genome_data[taxonomy_id]}")
       
-  
+  print()
   for tax_id, count in tax_count.items():
       print(f"Tax ID: {tax_id}, {genome_data[taxonomy_id]}, Number of Pseudoreads: {count}")
-
+  print()
 
 # Step 6. print data and summary below of kmer hits
 def print_kmers_classified(reads_dict, genome_data):
@@ -230,9 +228,8 @@ def print_kmers_classified(reads_dict, genome_data):
               overal += count
   
   for tax_id, total_count in tax_count.items():
-      print(f"Tax ID: {tax_id}, {genome_data[tax_id]}")
+      print(f"Tax ID: {tax_id}, {genome_data[tax_id]}\n")
       print(f"Total Accumulated Hit Counts: {total_count} out of {overal}\n")
-
 
 if __name__ == "__main__":
   main()
