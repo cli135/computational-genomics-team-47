@@ -8,9 +8,9 @@ import time
 import taxonomy_tree
 import kmer_to_lca_mapping
 import get_kmer_hit_counts
-import root_to_leaf_paths
 import pseudoreads
 
+# Command line option parsing
 def parse_args():
   parse = argparse.ArgumentParser(
     description="Find contaminants in a input query genome by looking up kmers in a known contaminant database"
@@ -66,11 +66,18 @@ def parse_args():
   )
 
   parse.add_argument(
-    "--output",
-    default=sys.stdout,
-    help="Output stream to output results of contamination detection and classification to \
-        (default: sys.stdout)"
+    "--k",
+    default=12,
+    type=int,
+    help="k, the length of the kmer (default: k = 12, which runs on the ugrad machines well (within memory constraints). k = 31 is ideal if the computer has enough memory.)"
   )
+
+  # parse.add_argument(
+  #   "--output",
+  #   default=sys.stdout,
+  #   help="Output stream to output results of contamination detection and classification to \
+  #       (default: sys.stdout)"
+  # )
 
   return parse.parse_args()
 
@@ -82,7 +89,9 @@ def main():
   # print out command line arguments entered
   print("Database:", args.db)
   print("Input query sequence:", args.input_query)
-  print("Output:", args.output)
+  print("Taxonomy:", args.taxonomy)
+  print("Seq ID to Taxonomy ID Mapping:", args.taxonomy_ids)
+  # print("Output:", args.output)
 
   # ====================================================
   # Begin the contamination detection and classification 
@@ -92,8 +101,9 @@ def main():
 
   # Step 0. Pick k
   # the kmer length
-  k = 31
+  k = args.k
   print("kmer length, k:", k)
+  print("k, the length of the kmer (default: k = 12, which runs on the ugrad machines well (within memory constraints). k = 31 is ideal if the computer has enough memory.)")
 
   # Step 1. Build the taxonomy
   # This method is found in the taxonomy_tree.py file
@@ -128,12 +138,7 @@ def main():
     hit_counts = get_kmer_hit_counts.get_kmer_hit_counts_with_database_from_psuedoreads(pseudoread, kmer_to_lca, k)
     pseudoread_to_hit_counts[pseudoread] = hit_counts
 
-
-  # Step 5. Root to leaf paths to find the most likely contaminant
-  # This method is found in the root_to_leaf_paths.py file
-  # path_of_likely_contaminant = root_to_leaf_paths.find_likely_contaminant()
-
-  # Step 6. print data and summary below of contaminants found
+  # Step 5. print data and summary below of contaminants found
 
   # Dictionary of taxonomy ids to assembly name
   genome_data = {
@@ -160,7 +165,7 @@ def main():
       '2842456': "Ralstonia wenshanensis strain 56D2 chromosome, complete genome",
       '38310': "Rhodococcus coprophilus strain NCTC10994 chromosome 1, complete sequence",
       '655813': "Streptococcus oralis ATCC 35037 strain NCTC 11427 chromosome 1, complete sequence",
-      '2697049': "Severe acute respiratory syndrome coronavirus 2 isolate Wuhan-Hu-1, complete genome"
+      '2697049': "Severe acute respiratory syndrome coronavirus 2 isolate Wuhan-Hu-1, complete genome",
   }
   
   print("#############################################")  
@@ -193,21 +198,31 @@ def print_pseudoreads_classified(pseudoread_to_hit_counts, genome_data):
   tax_count = {}
   for pseudoread, hit_counts in pseudoread_to_hit_counts.items():
       # Find what the pseudoread mapped to the most
-      taxonomy_id_with_max_hits = \
-        max(hit_counts.keys(), key=lambda x : hit_counts[x])
-      # Keep track of what taxonomy ids have been mapped to so far and how often
-      if taxonomy_id_with_max_hits in tax_count:
-          tax_count[taxonomy_id_with_max_hits] += 1
-      else:
-          tax_count[taxonomy_id_with_max_hits] = 1
+      # add a bounds check to avoid an error in
+      # the case where hit_counts is empty
+      if len(hit_counts) != 0:
+        taxonomy_id_with_max_hits = \
+          max(hit_counts.keys(), key=lambda x : hit_counts[x])
+        # Keep track of what taxonomy ids have been mapped to so far and how often
+        if taxonomy_id_with_max_hits in tax_count:
+            tax_count[taxonomy_id_with_max_hits] += 1
+        else:
+            tax_count[taxonomy_id_with_max_hits] = 1
   print("Psuedoreads classified:")
   total_hit_count = sum(tax_count.values())
   for taxonomy_id, count in tax_count.items():
+    if taxonomy_id in genome_data:
       print(f"{round(count/total_hit_count*100, 2)}% of reads mapped to Taxonomy ID {taxonomy_id}, {genome_data[taxonomy_id]}")
+    else:
+      print(f"{round(count/total_hit_count*100, 2)}% of reads mapped to Taxonomy ID {taxonomy_id}")
       
   print()
   for tax_id, count in tax_count.items():
+    if taxonomy_id in genome_data:
       print(f"Tax ID: {tax_id}, {genome_data[taxonomy_id]}, Number of Pseudoreads: {count}")
+    else:
+      print(f"Tax ID: {tax_id}, Number of Pseudoreads: {count}")
+
   print()
 
 # Step 6. print data and summary below of kmer hits
@@ -228,8 +243,12 @@ def print_kmers_classified(reads_dict, genome_data):
               overal += count
   
   for tax_id, total_count in tax_count.items():
+    if tax_id in genome_data:
       print(f"Tax ID: {tax_id}, {genome_data[tax_id]}\n")
-      print(f"Total Accumulated Hit Counts: {total_count} out of {overal}\n")
+    else:
+      print(f"Tax ID: {tax_id}\n")
+
+    print(f"Total Accumulated Hit Counts: {total_count} out of {overal}\n")
 
 if __name__ == "__main__":
   main()

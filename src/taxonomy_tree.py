@@ -198,7 +198,10 @@ def build_parent_map(taxonomy_directory : str, custom_taxonomy_ids_filename : st
 
   nodes_dmp_file_handle.close()
   print("\nAll lines processed in the nodes.dmp file")
+  print("The taxonomy tree from nodes.dmp has been successfully loaded \
+    into a parent_map data structure in working memory.")
 
+  # print("Resolving orphans in the parent_map tree data structure:")
   # Create any parents that were unseen or appeared out of order in the nodes.dmp file
   for tax_id in parents_unseen:
     # get the current node whose parents were unseen (orphan)
@@ -218,7 +221,9 @@ def build_parent_map(taxonomy_directory : str, custom_taxonomy_ids_filename : st
       # truly an orphan node and we canont resolve this issue, so we report it
       print(f"""A parent node of orphaned tax_id node {tax_id} was not found
              in the nodes.dmp file: the unfound parent is {orphan_node.parentTaxId}""")
-  
+
+  # print("Orphans resolved in the parent_map tree data structure.")
+
   # Moving on to the next step, which is pruning unused branches of the taxonomy tree
   # i.e. the taxonomy tree is not deep (~7 ranks: kingdom, phylum, ..., genus, species)
   # but it is very, very wide, it is the taxonomic tree of the entire tree of life on Earth
