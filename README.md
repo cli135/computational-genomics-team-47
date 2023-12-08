@@ -1,6 +1,13 @@
 # computational-genomics-team-47
 computational-genomics-team-47 Fall 2023 - Dr. Langmead's Computational Genomics: Sequences
 
+## Specific Reproducible Runs of the Program
+
+Below we describe specific runs of the program, reproducible on the ugrad machines, and their expected results.
+
+- 
+
+
 ## How to run the program / Usage
 - `unzip taxonomy/names-and-nodes.zip -d taxonomy/`
   - This unzips the `names.dmp` and `nodes.dmp` file into the `taxonomy` directory.
@@ -11,10 +18,20 @@ computational-genomics-team-47 Fall 2023 - Dr. Langmead's Computational Genomics
 ### Additional arguments
 Here is an invocation of the program providing all optional arguments that are available:
 
-- `python3 src/main.py --db genomes-of-common-contaminants-size-halved/ --input-query covid-assemblies/covid-assembly-1.txt --taxonomy taxonomy --taxonomy-ids taxonomy/custom_taxonomy_ids.txt --k 31`
+- `python3 src/main.py --db new-tutorial-reference-database/ --input-query covid-assemblies/covid-assembly-1.txt --taxonomy taxonomy --taxonomy-ids taxonomy/custom_taxonomy_ids.txt --k 31`
 
 The arguments are outlined below:
-- ``
+- `--db`
+  - Name of the directory containing the database of known contaminants which you want to cross-check the input sequence for (default: `new-tutorial-reference-database`)
+- `--input-query`
+  - Filename of the sequence in which the program will search for contaminants (required)
+- `--taxonomy`
+  - Name of the directory containing the taxonomy (including `names.dmp` and `nodes.dmp`) (default: `taxonomy`)
+- `--taxonomy-ids`
+  - Name of the plaintext file (default: `taxonomy/custom_taxonomy_ids.txt`) which contains taxonomy ids sourced from NCBI corresponding to the NCBI accession IDs of the FASTA files in the database
+- `--k`
+  - k, the length of the kmer (default: k = 12, which runs on the ugrad machines well (within memory constraints). k = 31 is ideal if the computer has enough memory.)
+
 
 ## Overview
 

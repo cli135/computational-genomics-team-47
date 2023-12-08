@@ -19,7 +19,7 @@ def parse_args():
   parse.add_argument(
     "--db",
     # TODO swap out which default database we want to use
-    default="genomes-of-common-contaminants-size-halved",
+    default="new-tutorial-reference-database",
 
     # ------------------------
     # FOR TUTORIAL PURPOSES:
@@ -28,11 +28,11 @@ def parse_args():
     # ***NOTE:*** Using default="genomes-of-common-contaminants" as the reference database
     #             requires significant computing power (more than typical ugrad cluster). So we
     #            have provided a shortened version of the database for to use for a tutorial
-    #            ie default="tutorial-reference-database".
+    #            ie default="new-tutorial-reference-database".
     # ------------------------
 
     help="Name of the directory containing the database of known contaminants \
-      which you want to cross-check the input sequence for (default: genomes-of-common-contaminants-size-halved)"
+      which you want to cross-check the input sequence for (default: new-tutorial-reference-database)"
   )
 
     # ------------------------
