@@ -19,7 +19,7 @@ def parse_args():
   parse.add_argument(
     "--db",
     # TODO swap out which default database we want to use
-    default="genomes-of-common-contaminants",
+    default="genomes-of-common-contaminants-size-halved",
 
     # ------------------------
     # FOR TUTORIAL PURPOSES:
@@ -67,7 +67,7 @@ def parse_args():
 
   parse.add_argument(
     "--k",
-    default=12,
+    default=31,
     type=int,
     help="k, the length of the kmer (default: k = 12, which runs on the ugrad machines well (within memory constraints). k = 31 is ideal if the computer has enough memory.)"
   )
