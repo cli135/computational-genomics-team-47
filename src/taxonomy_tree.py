@@ -37,15 +37,6 @@ Jaeyoon Wang
 
 """
 
-# TODO I need to clean up the distinction between '1' and 1, i.e. strings and ints
-# for the taxonomy id. They are basically all strings right now (e.g. '13547' instead of 13547
-# except for a couple of cases where I need to fix them,
-# especially with the type signatures given below which are probably incorrectly
-# saying they ought to be ints)
-# and I am fine with taxonomy ids being strings instead of ints
-# since it appears that Python can handle the larger memory size just fine
-# and less type casting is required this way
-
 # TaxaTree data structure representing nodes in taxonomy
 class TaxaTree:
     def __init__(self, tax_id : str, rank="", parent = None, children = [], name = "", isRoot = False):
@@ -235,10 +226,6 @@ def build_parent_map(taxonomy_directory : str, custom_taxonomy_ids_filename : st
   # that are actually used and hit by the sequences in the reference genomes (~20 genomes), so
   # this step may involve pruning the taxonomic tree to make it small enough for ideally
   # a smaller memory usage
-
-  # TODO prune taxonomic tree and output pruned tree information to a file to be read later
-
-  # let's start with only the ID tree that Derrick Wood uses
   
   taxonomy_ids_of_reference_genomes : List[str] = get_taxonomy_ids_from_file(custom_taxonomy_ids_filename)
   pruned_taxonomy_id_to_parent_id = {}
@@ -255,18 +242,12 @@ def build_parent_map(taxonomy_directory : str, custom_taxonomy_ids_filename : st
     while cur_id in taxonomy_id_to_parent_id and cur_id != '1':
       # we copy over this key-value (child node to parent node) pair to pruned tree
       pruned_taxonomy_id_to_parent_id[cur_id] = taxonomy_id_to_parent_id[cur_id]
-
-      # TODO finish here
-      # parent_id = taxonomy_id_to_parent_id[cur_id]
-      # parent_node = taxonomy_id_to_node[parent_id]
-      # cur_node = TaxaTree(cur_id, parent=parent_node)
       
       # now we chase the parent node's parent, iteratively, until we hit the root, or another dead-end
       cur_id = taxonomy_id_to_parent_id[cur_id]
     
   # doing the nodes now
 
-  # TODO 1 or '1'?
   pruned_taxonomy_id_to_node = {}
 
   for taxonomy_id in taxonomy_ids_of_reference_genomes:
@@ -301,27 +282,8 @@ def build_parent_map(taxonomy_directory : str, custom_taxonomy_ids_filename : st
   # that are necessary for our taxonomic classification purposes
   # (i.e. leaf nodes are only those ~20 reference genomes,
   # or however many we choose to have)
-
-  # # TODO the below needs recalibrated with the above code which is correct
-  # # TODO finish Jennifer's approach of pruning the node subtree too
-  # # if there are paths that don't reach the root that is fine, they are just disconnected
-  # # you can leave them disconnected but they should be connected
-  # pruned_taxonomy_id_to_node = {}
-  # for taxonomy_id in taxonomy_ids_of_reference_genomes:
-  #   # we start with the taxonomy id of that genome
-  #   cur_id = taxonomy_id
-  #   # and until we run into a dead-end and can't go any further (hopefully it is the root)
-  #   while cur_id in taxonomy_id_to_node and taxonomy_id_to_node[cur_id] != root_node:       
-  #     # we copy over this key-value (child node to parent node) pair to pruned tree
-  #     pruned_taxonomy_id_to_node[taxonomy_id] = taxonomy_id_to_node[taxonomy_id]
-  #     # now we chase the parent node's parent, iteratively, until we hit the root
-  #     cur_id = taxonomy_id_to_parent_id[taxonomy_id]
-  
-
   # and return the gathered tree information about the
   # taxonomic tree so that it doesn't have to be loaded in memory again
-  # TODO make sure this is returning everything that needs to be returned
-  # TODO make all the return values pruned, including the first one
   pruned_tree_root_node = pruned_taxonomy_id_to_node['1']
   pruned_tree_root_node.isRoot()
   # print(pruned_taxonomy_id_to_node)
