@@ -1,22 +1,22 @@
 # computational-genomics-team-47
 computational-genomics-team-47 Fall 2023 - Dr. Langmead's Computational Genomics: Sequences
 
-## Specific Reproducible Runs of the Program
-
-Below we describe specific runs of the program, reproducible on the ugrad machines, and their expected results.
-
-- 
-
-
 ## How to run the program / Usage
 - `unzip taxonomy/names-and-nodes.zip -d taxonomy/`
   - This unzips the `names.dmp` and `nodes.dmp` file into the `taxonomy` directory.
+
+- Now the program is ready to be run. Please refer to the below section for specific reproducible runs of the program.
+
+### Specific Reproducible Runs of the Program
+
+Below we describe specific runs of the program, reproducible on the ugrad machines, and their expected results.
+
 - `python src/main.py --input-query covid-assemblies/covid-assembly-1.txt`
   - The program can be run on any of the 9 input assemblies, e.g.
   - `python src/main.py --input-query covid-assemblies/covid-assembly-9.txt`
 
 ### Additional arguments
-Here is an invocation of the program providing all optional arguments that are available:
+Here is an example invocation of the program providing all optional arguments that are available:
 
 - `python3 src/main.py --db new-tutorial-reference-database/ --input-query covid-assemblies/covid-assembly-1.txt --taxonomy taxonomy --taxonomy-ids taxonomy/custom_taxonomy_ids.txt --k 31`
 
@@ -32,8 +32,7 @@ The arguments are outlined below:
 - `--k`
   - k, the length of the kmer (default: k = 31, which runs on the ugrad machines well using the new-tutorial-reference-database (within memory constraints). k = 31 is ideal if the computer has enough memory. Otherwise, k = 12 may work better.)
 
-
-## Overview
+## Overview of methods
 
 Our program has 5 steps, which are identified in the below picture:
 
