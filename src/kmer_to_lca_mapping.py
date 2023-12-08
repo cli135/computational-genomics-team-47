@@ -99,7 +99,9 @@ def build_database(
       # check if the accession id is in the accesion id to tax id mapping
       if (accession_id in ncbi_accession_id_to_tax_id_mapping.keys()):
         # We are searching this file
-        print(f"searching file {file_count} with accession_id {str(accession_id)}")
+        print(f"Building K-mer to LCA dictionary using file {str(file_count)} with accession_id {str(accession_id)} as a reference genome assembly")
+        # Increment the file count
+        file_count += 1
 
         # if it is, then get the tax id
         tax_id = ncbi_accession_id_to_tax_id_mapping[accession_id]
@@ -126,10 +128,6 @@ def build_database(
               kmers_to_lca[kmer] = lca(taxonomy_id_to_parent_id, kmers_to_lca[kmer], tax_id)
       else:
         continue
-    if k <= 8:
-      print(kmers_to_lca)
-    # Increment the file count
-    file_count += 1
 
   return kmers_to_lca
 
@@ -201,42 +199,3 @@ def lca(taxonomy_id_to_parent_id, first_taxonomy_id : str, second_taxonomy_id : 
   # point of intersection of the path from a to root
   # and the path from b to root
   return b
-
-# def lca(root_node : TaxaTree, first_node : TaxaTree, second_node : TaxaTree) -> TaxaTree:
-#   """
-#   Compute the least common ancestor of two nodes, first_node
-#   and second_node, in the TaxaTree rooted at root_node
-
-#   ***Same functionality as the other lca(a, b) method above,
-#   but the type signature is overloaded this time to deal with TaxaTree
-#   nodes directly instead of cycling through integer dictionaries,
-#   i.e. this time the n-ary tree structure is explicitly stored in
-#   memory instead of chasing integer references***
-
-#   Some notes / invariants about this function:
-
-#     lca(root_node, a_node, b_node) = lca(root_node, b_node, a_node) # symmetry of a_node and b_node
-#     lca(root_node, root_node, a) = lca(root_node, a, root_node) = 1 # anything lca'ed with the root is root
-#     lca(root_node, 0, a) = lca(root_node, a, 0) = a # 0 is not a valid taxonomy_id,
-#       so this means to return the other taxonomy_id unchanged
-
-#   This code is inspired from Derrick Wood's krakenutil.cpp code at:
-#   https://github.com/DerrickWood/kraken/blob/master/src/krakenutil.cpp
-#   """
-#   # The implementation for this function may be similar to
-#   # finding the intersection of two linked lists on a leaf-to-root path
-#   # or any other algorithm for finding the least common ancestor of two nodes
-#   # in a binary tree
-
-#   # TODO implement me!
-#   # raise NotImplementedError()
-
-
-# def main():
-#   output = build_database("gocc-shortened", "taxonomy/custom_taxonomy_ids.txt", 31)
-#   print(output)
-#   lca(None, None, None)
-
-
-# if __name__ == "__main__":
-#   main()
