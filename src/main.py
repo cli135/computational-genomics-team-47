@@ -23,11 +23,12 @@ def parse_args():
 
     # ------------------------
     # FOR TUTORIAL PURPOSES:
-    # Use: default="gocc-shortened"
+    # Use: default="tutorial-reference-database"
     # 
     # ***NOTE:*** Using default="genomes-of-common-contaminants" as the reference database
     #             requires significant computing power (more than typical ugrad cluster). So we
-    #            have provided a shortened version of the database for to use for a tutorial.
+    #            have provided a shortened version of the database for to use for a tutorial
+    #            ie default="tutorial-reference-database".
     # ------------------------
 
     help="Name of the directory containing the database of known contaminants \
