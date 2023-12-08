@@ -70,7 +70,7 @@ def parse_args():
     "--k",
     default=31,
     type=int,
-    help="k, the length of the kmer (default: k = 12, which runs on the ugrad machines well (within memory constraints). k = 31 is ideal if the computer has enough memory.)"
+    help="k, the length of the kmer (default: k = 31, which runs on the ugrad machines well using the new-tutorial-reference-database (within memory constraints). k = 31 is ideal if the computer has enough memory. Otherwise, k = 12 may work better.)"
   )
 
   # parse.add_argument(
@@ -166,7 +166,8 @@ def main():
       '2842456': "Ralstonia wenshanensis strain 56D2 chromosome, complete genome",
       '38310': "Rhodococcus coprophilus strain NCTC10994 chromosome 1, complete sequence",
       '655813': "Streptococcus oralis ATCC 35037 strain NCTC 11427 chromosome 1, complete sequence",
-      '2697049': "Severe acute respiratory syndrome coronavirus 2 isolate Wuhan-Hu-1, complete genome"
+      '2697049': "Severe acute respiratory syndrome coronavirus 2 isolate Wuhan-Hu-1, complete genome",
+      '1': "root"
   }
   
   print("#############################################")  
@@ -245,9 +246,9 @@ def print_kmers_classified(reads_dict, genome_data):
   
   for tax_id, total_count in tax_count.items():
     if tax_id in genome_data:
-      print(f"Tax ID: {tax_id}, {genome_data[tax_id]}\n")
+      print(f"Tax ID: {tax_id}, {genome_data[tax_id]}")
     else:
-      print(f"Tax ID: {tax_id}\n")
+      print(f"Tax ID: {tax_id}")
 
     print(f"Total Accumulated Hit Counts: {total_count} out of {overal}\n")
 

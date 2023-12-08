@@ -30,7 +30,7 @@ The arguments are outlined below:
 - `--taxonomy-ids`
   - Name of the plaintext file (default: `taxonomy/custom_taxonomy_ids.txt`) which contains taxonomy ids sourced from NCBI corresponding to the NCBI accession IDs of the FASTA files in the database
 - `--k`
-  - k, the length of the kmer (default: k = 12, which runs on the ugrad machines well (within memory constraints). k = 31 is ideal if the computer has enough memory.)
+  - k, the length of the kmer (default: k = 31, which runs on the ugrad machines well using the new-tutorial-reference-database (within memory constraints). k = 31 is ideal if the computer has enough memory. Otherwise, k = 12 may work better.)
 
 
 ## Overview
